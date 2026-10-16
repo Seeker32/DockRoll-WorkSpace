@@ -6,3 +6,7 @@
 	path = DockRoll
 	url = git@github.com:Seeker32/DockRoll.git
 	branch = main
+[submodule ".wiki"]
+	path = .wiki
+	url = git@github.com:Seeker32/DockRoll-WorkSpace.wiki.git
+	branch = master
