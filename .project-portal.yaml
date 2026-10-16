@@ -1,0 +1,15 @@
+schema_version: 1
+project:
+  id: ota
+  name: OTA
+  description: OTA workspace portal for project progress and documentation.
+  default_locale: zh-CN
+  locales: [zh-CN, en-US]
+  accent: "#f35b33"
+sources:
+  - id: wiki
+    label: Project Wiki
+    path: .wiki
+    kind: wiki
+    area: project
+    order: 1

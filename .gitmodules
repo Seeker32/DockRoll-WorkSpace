@@ -1,0 +1,8 @@
+[submodule "portal"]
+	path = portal
+	url = git@github.com:Seeker32/portal.git
+	branch = main
+[submodule "DockRoll"]
+	path = DockRoll
+	url = git@github.com:Seeker32/DockRoll.git
+	branch = main
