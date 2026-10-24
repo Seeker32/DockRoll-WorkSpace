@@ -53,10 +53,6 @@
         "description": {
           "type": "string",
           "maxLength": 256
-        },
-        "source_commit": {
-          "type": "string",
-          "pattern": "^[a-f0-9]{7,40}$"
         }
       }
     },
@@ -79,7 +75,8 @@
             "enum": [
               "linux"
             ]
-          }
+          },
+          "maxItems": 1
         },
         "arch": {
           "type": "array",
@@ -90,7 +87,8 @@
               "amd64",
               "arm64"
             ]
-          }
+          },
+          "maxItems": 2
         },
         "min_agent_version": {
           "$ref": "#/$defs/version"
@@ -142,6 +140,12 @@
           "additionalProperties": {
             "type": "string",
             "maxLength": 128
+          },
+          "maxProperties": 16,
+          "propertyNames": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$",
+            "maxLength": 128
           }
         }
       }
@@ -169,7 +173,8 @@
           "uniqueItems": true,
           "items": {
             "$ref": "#/$defs/service_name"
-          }
+          },
+          "maxItems": 64
         },
         "preserve_shared_resources": {
           "type": "array",
@@ -177,7 +182,8 @@
           "items": {
             "type": "string",
             "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,63}$"
-          }
+          },
+          "maxItems": 32
         }
       },
       "allOf": [
@@ -253,14 +259,58 @@
           },
           "name": {
             "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,63}$",
             "minLength": 1,
-            "maxLength": 128
+            "maxLength": 64
           },
           "protection": {
             "const": "preserve"
+          },
+          "path": {
+            "$ref": "#/$defs/absolute_path"
           }
-        }
-      }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "bind_path"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "path"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "volume",
+                    "network"
+                  ]
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "properties": {
+                "path": false
+              }
+            }
+          }
+        ]
+      },
+      "maxItems": 32
     },
     "container": {
       "type": "object",
@@ -282,33 +332,38 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 256
-          }
+          },
+          "maxItems": 32
         },
         "args": {
           "type": "array",
           "items": {
             "type": "string",
             "maxLength": 1024
-          }
+          },
+          "maxItems": 128
         },
         "env": {
           "type": "array",
           "uniqueItems": true,
           "items": {
             "$ref": "#/$defs/env_entry"
-          }
+          },
+          "maxItems": 128
         },
         "ports": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/port"
-          }
+          },
+          "maxItems": 64
         },
         "mounts": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/mount"
-          }
+          },
+          "maxItems": 64
         },
         "network": {
           "type": "object",
@@ -327,7 +382,29 @@
             "name": {
               "$ref": "#/$defs/network_name"
             }
-          }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "mode": {
+                    "enum": [
+                      "host",
+                      "none"
+                    ]
+                  }
+                },
+                "required": [
+                  "mode"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "name": false
+                }
+              }
+            }
+          ]
         },
         "restart_policy": {
           "type": "object",
@@ -349,7 +426,47 @@
               "minimum": 1,
               "maximum": 10
             }
-          }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "name": {
+                    "const": "on-failure"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "then": {
+                "required": [
+                  "max_retries"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "name": {
+                    "enum": [
+                      "no",
+                      "always",
+                      "unless-stopped"
+                    ]
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "max_retries": false
+                }
+              }
+            }
+          ]
         },
         "resources": {
           "type": "object",
@@ -383,7 +500,36 @@
           "maximum": 300,
           "default": 10
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "network": {
+                "properties": {
+                  "mode": {
+                    "enum": [
+                      "host",
+                      "none"
+                    ]
+                  }
+                },
+                "required": [
+                  "mode"
+                ]
+              }
+            },
+            "required": [
+              "network"
+            ]
+          },
+          "then": {
+            "properties": {
+              "ports": false
+            }
+          }
+        }
+      ]
     },
     "compose": {
       "type": "object",
@@ -402,7 +548,8 @@
           "items": {
             "$ref": "#/$defs/artifact"
           },
-          "default": []
+          "default": [],
+          "maxItems": 32
         },
         "services": {
           "type": "array",
@@ -426,7 +573,8 @@
                 "default": true
               }
             }
-          }
+          },
+          "maxItems": 32
         },
         "profiles": {
           "type": "array",
@@ -435,7 +583,8 @@
             "type": "string",
             "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,63}$"
           },
-          "default": []
+          "default": [],
+          "maxItems": 8
         }
       }
     },
@@ -451,7 +600,8 @@
           "minItems": 1,
           "items": {
             "$ref": "#/$defs/config_file"
-          }
+          },
+          "maxItems": 128
         }
       }
     },
@@ -461,7 +611,8 @@
       "items": {
         "$ref": "#/$defs/secret_entry"
       },
-      "default": []
+      "default": [],
+      "maxItems": 64
     },
     "apply_policy": {
       "type": "object",
@@ -492,7 +643,8 @@
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 256
-              }
+              },
+              "maxItems": 32
             },
             "timeout_seconds": {
               "type": "integer",
@@ -575,7 +727,8 @@
         "observation_window_seconds": {
           "type": "integer",
           "minimum": 10,
-          "maximum": 3600
+          "maximum": 3600,
+          "description": "Time spent observing health before deciding success or rollback."
         },
         "success_criteria": {
           "enum": [
@@ -627,7 +780,8 @@
         "deadline_seconds": {
           "type": "integer",
           "minimum": 30,
-          "maximum": 1800
+          "maximum": 1800,
+          "description": "Rollback execution budget starting after the observation window decides failure; it does not include the observation window."
         }
       },
       "allOf": [
@@ -916,7 +1070,70 @@
           "minLength": 1,
           "maxLength": 256
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "provider": {
+                "const": "file"
+              }
+            },
+            "required": [
+              "provider"
+            ]
+          },
+          "then": {
+            "properties": {
+              "ref": {
+                "type": "string",
+                "pattern": "^/run/dockroll-secrets/[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$",
+                "maxLength": 96
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "provider": {
+                "const": "env"
+              }
+            },
+            "required": [
+              "provider"
+            ]
+          },
+          "then": {
+            "properties": {
+              "ref": {
+                "type": "string",
+                "pattern": "^[A-Z_][A-Z0-9_]{0,127}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "provider": {
+                "const": "docker_secret"
+              }
+            },
+            "required": [
+              "provider"
+            ]
+          },
+          "then": {
+            "properties": {
+              "ref": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$"
+              }
+            }
+          }
+        }
+      ]
     },
     "mount": {
       "type": "object",
@@ -937,7 +1154,8 @@
         "source": {
           "type": "string",
           "minLength": 1,
-          "maxLength": 4096
+          "maxLength": 4096,
+          "description": "Bind sources must match $defs.bind_source and resolve inside /etc/dockroll/apps/<app_id>/, /var/lib/dockroll/apps/<app_id>/, /srv/<app_id>/ or /opt/<app_id>/."
         },
         "target": {
           "$ref": "#/$defs/absolute_path"
@@ -961,7 +1179,7 @@
           "then": {
             "properties": {
               "source": {
-                "$ref": "#/$defs/absolute_path"
+                "$ref": "#/$defs/bind_source"
               }
             }
           }
@@ -1075,7 +1293,8 @@
         "port": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 65535
+          "maximum": 65535,
+          "description": "Container port probed from inside the app network; not necessarily a published host port."
         },
         "scheme": {
           "enum": [
@@ -1107,7 +1326,8 @@
         "port": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 65535
+          "maximum": 65535,
+          "description": "Container port probed from inside the app network; not necessarily a published host port."
         },
         "service": {
           "$ref": "#/$defs/service_name"
@@ -1132,12 +1352,19 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 256
-          }
+          },
+          "maxItems": 32
         },
         "service": {
           "$ref": "#/$defs/service_name"
         }
       }
+    },
+    "bind_source": {
+      "type": "string",
+      "pattern": "^/(?:etc/dockroll/apps|var/lib/dockroll/apps|srv|opt)(?:/[A-Za-z0-9][A-Za-z0-9._-]*)+$",
+      "maxLength": 4096,
+      "description": "Allowlisted bind mount source. M1 must resolve symlinks with realpath and re-check the resolved path."
     }
   }
 }

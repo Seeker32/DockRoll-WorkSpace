@@ -24,6 +24,7 @@ import posixpath
 import re
 import sys
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -46,8 +47,16 @@ except ImportError:  # pragma: no cover - only used when cryptography is absent
 
 SCHEMA_PATH = Path(__file__).with_name("manifest.schema.json")
 SUPPORTED_SCHEMA_VERSIONS = ("1.0",)
+MAX_MANIFEST_BYTES = 1024 * 1024
+TIMESTAMP_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 MIN_COMPOSE_VERSION = (5, 0, 1)
 CONFIG_ROOT_PREFIX = "/etc/dockroll/apps/"
+BIND_SOURCE_PREFIXES = (
+    "/etc/dockroll/apps/",
+    "/var/lib/dockroll/apps/",
+    "/srv/",
+    "/opt/",
+)
 SEMVER_RE = re.compile(r"^([0-9]+)\.([0-9]+)\.([0-9]+)")
 SECRET_ENV_NAME_RE = re.compile(
     r"(?i)(password|passwd|secret|token|api[_-]?key|private[_-]?key|credential)"
@@ -115,6 +124,37 @@ def json_schema_issues(error: jsonschema.ValidationError) -> list[ValidationIssu
                 for name in names
             ]
 
+    if error.validator == "propertyNames":
+        match = re.search(r"'([^']+)' does not match", message)
+        if match:
+            name = match.group(1)
+            return [
+                ValidationIssue(
+                    f"{path}[{json.dumps(name, ensure_ascii=False)}]",
+                    f"invalid property name '{name}': {error.message}",
+                    "schema.propertyNames",
+                )
+            ]
+
+    if error.validator in {"maxItems", "minItems", "maxProperties", "minProperties"}:
+        if isinstance(error.instance, list):
+            count, unit = len(error.instance), "items"
+        elif isinstance(error.instance, dict):
+            count, unit = len(error.instance), "properties"
+        else:
+            count, unit = None, "entries"
+        if count is not None:
+            return [
+                ValidationIssue(
+                    path,
+                    f"{unit} count {count} violates {error.validator}={error.validator_value}",
+                    f"schema.{error.validator}",
+                )
+            ]
+
+    if error.validator == "uniqueItems":
+        return [ValidationIssue(path, "array contains duplicate entries", "schema.uniqueItems")]
+
     if error.validator in {"oneOf", "anyOf"}:
         return [
             ValidationIssue(
@@ -124,43 +164,71 @@ def json_schema_issues(error: jsonschema.ValidationError) -> list[ValidationIssu
             )
         ]
 
-    if error.validator == "false":
+    if error.validator in {"false", None}:
         return [ValidationIssue(path, "field is not allowed in this context", "schema.forbidden")]
 
     return [ValidationIssue(path, message, f"schema.{error.validator}")]
 
 
+def _canonical_json(value: Any, current: str = "$") -> str:
+    """RFC 8785-style canonical JSON for the types allowed in a manifest.
+
+    Keys are sorted by UTF-16 code units (the JCS rule), not Python code
+    points. This matters for non-BMP characters; label keys are additionally
+    restricted to ASCII by the schema. Floating point numbers are rejected so
+    the bytes stay stable across implementations.
+    """
+
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    if value is None:
+        return "null"
+    if isinstance(value, int):
+        return str(value)
+    if isinstance(value, float):
+        raise ValueError(
+            f"{current}: floating point numbers are not supported by the "
+            "canonicalizer; use integer units"
+        )
+    if isinstance(value, str):
+        return json.dumps(value, ensure_ascii=False)
+    if isinstance(value, list):
+        return "[" + ",".join(
+            _canonical_json(child, f"{current}[{index}]") for index, child in enumerate(value)
+        ) + "]"
+    if isinstance(value, dict):
+        for key in value:
+            if not isinstance(key, str):
+                raise ValueError(f"{current}: object keys must be strings")
+        items = sorted(value.items(), key=lambda item: item[0].encode("utf-16-be"))
+        return "{" + ",".join(
+            json.dumps(key, ensure_ascii=False) + ":" + _canonical_json(child, f"{current}.{key}")
+            for key, child in items
+        ) + "}"
+    raise ValueError(f"{current}: unsupported JSON value type {type(value).__name__}")
+
+
 def canonical_bytes(manifest: dict[str, Any]) -> bytes:
     """Canonical JSON for signing: RFC 8785 subset without signature.signature.
 
-    Only objects, arrays, strings, integers, booleans and null are accepted;
-    floating point numbers are rejected so the result is byte-stable across
-    implementations. The signature envelope (algorithm, key_id, signed_at,
-    canonicalization) is signed; only the signature value itself is excluded.
+    The signature envelope (algorithm, key_id, signed_at, canonicalization) is
+    signed; only the signature value itself is excluded. Keys are sorted by
+    UTF-16 code units and only objects, arrays, strings, integers, booleans and
+    null are accepted, so the result is byte-stable across implementations.
     """
 
     payload = copy.deepcopy(manifest)
     signature = payload.get("signature")
     if isinstance(signature, dict):
         signature.pop("signature", None)
+    return _canonical_json(payload).encode("utf-8")
 
-    def reject_floats(value: Any, current: str) -> None:
-        if isinstance(value, float):
-            raise ValueError(
-                f"{current}: floating point numbers are not supported by the "
-                "canonicalizer; use integer units"
-            )
-        if isinstance(value, dict):
-            for key, child in value.items():
-                reject_floats(child, f"{current}.{key}")
-        elif isinstance(value, list):
-            for index, child in enumerate(value):
-                reject_floats(child, f"{current}[{index}]")
 
-    reject_floats(payload, "$")
-    return json.dumps(
-        payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-    ).encode("utf-8")
+def parse_timestamp(value: str) -> datetime | None:
+    try:
+        return datetime.strptime(value, TIMESTAMP_FORMAT).replace(tzinfo=timezone.utc)
+    except (TypeError, ValueError):
+        return None
 
 
 def manifest_digest(manifest: dict[str, Any]) -> str:
@@ -203,6 +271,51 @@ def prescan_issues(manifest: dict[str, Any]) -> list[ValidationIssue]:
                             "secret.inline",
                         )
                     )
+
+    mounts = container.get("mounts") if isinstance(container, dict) else None
+    if isinstance(mounts, list):
+        for index, mount in enumerate(mounts):
+            if not isinstance(mount, dict) or mount.get("type") != "bind":
+                continue
+            source = mount.get("source")
+            if not isinstance(source, str):
+                continue
+            if source == "/var/run/docker.sock":
+                issues.append(
+                    ValidationIssue(
+                        f"$.container.mounts[{index}].source",
+                        "Docker socket must not be bind-mounted; use the Docker SDK instead",
+                        "mount.docker-socket-forbidden",
+                    )
+                )
+            elif not source.startswith(BIND_SOURCE_PREFIXES):
+                issues.append(
+                    ValidationIssue(
+                        f"$.container.mounts[{index}].source",
+                        "bind mount source is outside the allowlist "
+                        "(/etc/dockroll/apps/<app_id>/, /var/lib/dockroll/apps/<app_id>/, /srv/<app_id>/, /opt/<app_id>/)",
+                        "mount.source-not-allowed",
+                    )
+                )
+
+    network = container.get("network") if isinstance(container, dict) else None
+    if isinstance(network, dict) and network.get("mode") in {"host", "none"}:
+        if "ports" in container:
+            issues.append(
+                ValidationIssue(
+                    "$.container.ports",
+                    "ports must not be declared when network.mode is host or none",
+                    "network.ports-forbidden",
+                )
+            )
+        if "name" in network:
+            issues.append(
+                ValidationIssue(
+                    "$.container.network.name",
+                    "network.name must not be set when network.mode is host or none",
+                    "network.name-forbidden",
+                )
+            )
 
     images: list[tuple[str, Any]] = []
     if isinstance(container, dict) and isinstance(container.get("image"), dict):
@@ -364,6 +477,29 @@ def semantic_issues(
             "schema-version.unsupported",
         )
 
+    created_at = manifest.get("created_at")
+    signed_at = manifest.get("signature", {}).get("signed_at") if isinstance(manifest.get("signature"), dict) else None
+    created_dt = parse_timestamp(created_at) if isinstance(created_at, str) else None
+    signed_dt = parse_timestamp(signed_at) if isinstance(signed_at, str) else None
+    if isinstance(created_at, str) and created_dt is None:
+        add(
+            "$.created_at",
+            "created_at is not a valid UTC timestamp (expected YYYY-MM-DDTHH:MM:SSZ)",
+            "timestamp.invalid",
+        )
+    if isinstance(signed_at, str) and signed_dt is None:
+        add(
+            "$.signature.signed_at",
+            "signed_at is not a valid UTC timestamp (expected YYYY-MM-DDTHH:MM:SSZ)",
+            "timestamp.invalid",
+        )
+    if created_dt is not None and signed_dt is not None and signed_dt < created_dt:
+        add(
+            "$.signature.signed_at",
+            "signed_at must not be earlier than created_at",
+            "timestamp.order",
+        )
+
     app_id = manifest.get("app_id")
     release_id = manifest.get("release_id")
     release_type = manifest.get("release_type")
@@ -423,12 +559,19 @@ def semantic_issues(
             provider = entry.get("provider")
             reference = entry.get("ref")
             if isinstance(provider, str) and isinstance(reference, str):
-                if provider == "file" and not reference.startswith("/"):
-                    add(
-                        f"$.secrets[{index}].ref",
-                        "file secret ref must be an absolute managed path",
-                        "secret.ref-invalid",
-                    )
+                if provider == "file":
+                    if not reference.startswith("/run/dockroll-secrets/"):
+                        add(
+                            f"$.secrets[{index}].ref",
+                            "file secret ref must be under /run/dockroll-secrets/",
+                            "secret.ref-invalid",
+                        )
+                    elif posixpath.normpath(reference) != reference or ".." in Path(reference).parts:
+                        add(
+                            f"$.secrets[{index}].ref",
+                            "file secret ref must be normalized and must not contain '..'",
+                            "secret.ref-invalid",
+                        )
                 elif provider == "env" and not re.match(r"^[A-Z_][A-Z0-9_]{0,127}$", reference):
                     add(
                         f"$.secrets[{index}].ref",
@@ -447,9 +590,19 @@ def semantic_issues(
     container = manifest.get("container") if isinstance(manifest.get("container"), dict) else {}
     env = container.get("env")
     if isinstance(env, list):
+        env_names: set[str] = set()
         for index, entry in enumerate(env):
             if not isinstance(entry, dict):
                 continue
+            env_name = entry.get("name")
+            if isinstance(env_name, str):
+                if env_name in env_names:
+                    add(
+                        f"$.container.env[{index}].name",
+                        f"duplicate environment variable name '{env_name}'; Docker last-wins semantics would silently drop an entry",
+                        "env.duplicate-name",
+                    )
+                env_names.add(env_name)
             secret_ref = entry.get("secret_ref")
             if isinstance(secret_ref, str) and secret_ref not in declared_secrets:
                 add(
@@ -477,6 +630,29 @@ def semantic_issues(
                 service_names.append(name)
         if release_type == "compose" and not service_names:
             add("$.compose.services", "compose release must declare at least one managed service", "compose.services-empty")
+
+    arch_values = compatibility.get("arch") if isinstance(compatibility.get("arch"), list) else []
+    if arch_values:
+        def check_image_platform(image: Any, path: str) -> None:
+            if not isinstance(image, dict):
+                return
+            platform = image.get("platform")
+            if not isinstance(platform, str):
+                return
+            platform_arch = platform.rsplit("/", 1)[-1]
+            if platform_arch not in arch_values:
+                add(
+                    f"{path}.platform",
+                    f"image platform '{platform}' is not covered by compatibility.arch {arch_values}",
+                    "image.platform-arch-mismatch",
+                )
+
+        if isinstance(container.get("image"), dict):
+            check_image_platform(container["image"], "$.container.image")
+        if isinstance(services, list):
+            for index, service in enumerate(services):
+                if isinstance(service, dict):
+                    check_image_platform(service.get("image"), f"$.compose.services[{index}].image")
 
     # Port conflicts inside the single-container spec.
     ports = container.get("ports")
@@ -524,6 +700,54 @@ def semantic_issues(
                         f"{key} must not be the host or container root",
                         "mount.root-forbidden",
                     )
+
+    # Bind mount allowlist, app ownership and read-only rules.
+    mounts = container.get("mounts")
+    if isinstance(mounts, list):
+        for index, mount in enumerate(mounts):
+            if not isinstance(mount, dict) or mount.get("type") != "bind":
+                continue
+            source = mount.get("source")
+            if not isinstance(source, str):
+                continue
+            parts = Path(source).parts
+            app_segment: str | None = None
+            if source.startswith("/etc/dockroll/apps/"):
+                app_segment = parts[4] if len(parts) > 4 else None
+                if isinstance(app_id, str) and app_segment != app_id:
+                    add(
+                        f"$.container.mounts[{index}].source",
+                        f"bind source must be under the managed app root for '{app_id}'",
+                        "mount.app-id-mismatch",
+                    )
+                if mount.get("read_only") is not True:
+                    add(
+                        f"$.container.mounts[{index}].read_only",
+                        "configuration bind mounts under /etc/dockroll/apps/<app_id>/ must be read_only",
+                        "mount.read-only-required",
+                    )
+            elif source.startswith("/var/lib/dockroll/apps/"):
+                app_segment = parts[5] if len(parts) > 5 else None
+                if isinstance(app_id, str) and app_segment != app_id:
+                    add(
+                        f"$.container.mounts[{index}].source",
+                        f"bind source must be under the managed app root for '{app_id}'",
+                        "mount.app-id-mismatch",
+                    )
+            elif source.startswith(("/srv/", "/opt/")):
+                app_segment = parts[2] if len(parts) > 2 else None
+                if isinstance(app_id, str) and app_segment != app_id:
+                    add(
+                        f"$.container.mounts[{index}].source",
+                        f"bind source must be under the app-specific root for '{app_id}'",
+                        "mount.app-id-mismatch",
+                    )
+            else:
+                add(
+                    f"$.container.mounts[{index}].source",
+                    "bind source is outside the allowlist",
+                    "mount.source-not-allowed",
+                )
 
     # Managed configuration paths.
     config = manifest.get("config") if isinstance(manifest.get("config"), dict) else {}
@@ -581,6 +805,16 @@ def semantic_issues(
                         "resource.duplicate",
                     )
                 shared_names.add(name)
+            if resource.get("kind") == "bind_path":
+                path = resource.get("path")
+                if isinstance(path, str):
+                    normalized = posixpath.normpath(path)
+                    if normalized != path or ".." in Path(path).parts or path == "/":
+                        add(
+                            f"$.shared_resources[{index}].path",
+                            "bind_path path must be a normalized absolute host path, not '/' and not containing '..'",
+                            "resource.bind-path-invalid",
+                        )
 
     takeover = manifest.get("takeover") if isinstance(manifest.get("takeover"), dict) else {}
     takeover_mode = takeover.get("mode", "none")
@@ -638,6 +872,15 @@ def semantic_issues(
             "$.health.check.service",
             "success_criteria 'primary_service_healthy' requires an explicit check.service",
             "health.primary-service-missing",
+        )
+
+    interval = health.get("interval_seconds")
+    timeout = health.get("timeout_seconds")
+    if isinstance(interval, int) and isinstance(timeout, int) and timeout >= interval:
+        add(
+            "$.health.timeout_seconds",
+            f"timeout_seconds ({timeout}) must be less than interval_seconds ({interval})",
+            "health.timeout-vs-interval",
         )
 
     # Reload targeting.
@@ -755,8 +998,34 @@ def validate_manifest(
     trusted_key: Path | None,
 ) -> ValidationResult:
     try:
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
+        size = manifest_path.stat().st_size
+        if size > MAX_MANIFEST_BYTES:
+            return ValidationResult(
+                manifest=str(manifest_path),
+                ok=False,
+                errors=[
+                    ValidationIssue(
+                        "$",
+                        f"manifest is {size} bytes; limit is {MAX_MANIFEST_BYTES} bytes",
+                        "manifest.too-large",
+                    )
+                ],
+            )
+        data = manifest_path.read_bytes()
+        if len(data) > MAX_MANIFEST_BYTES:
+            return ValidationResult(
+                manifest=str(manifest_path),
+                ok=False,
+                errors=[
+                    ValidationIssue(
+                        "$",
+                        f"manifest is {len(data)} bytes; limit is {MAX_MANIFEST_BYTES} bytes",
+                        "manifest.too-large",
+                    )
+                ],
+            )
+        manifest = json.loads(data.decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError, RecursionError) as exc:
         return ValidationResult(
             manifest=str(manifest_path),
             ok=False,
@@ -800,10 +1069,17 @@ def validate_manifest(
         )
 
     issues: list[ValidationIssue] = []
-    schema_errors = sorted(
-        validator.iter_errors(manifest),
-        key=lambda error: (tuple(str(part) for part in error.absolute_path), error.message),
-    )
+    try:
+        schema_errors = sorted(
+            validator.iter_errors(manifest),
+            key=lambda error: (tuple(str(part) for part in error.absolute_path), error.message),
+        )
+    except RecursionError:
+        return ValidationResult(
+            manifest=str(manifest_path),
+            ok=False,
+            errors=[ValidationIssue("$", "manifest nesting is too deep to validate safely", "manifest.too-deep")],
+        )
     for error in schema_errors:
         issues.extend(json_schema_issues(error))
     issues.extend(prescan_issues(manifest))

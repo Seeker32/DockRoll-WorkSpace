@@ -6,8 +6,7 @@
   "created_at": "2026-10-24T04:00:00Z",
   "metadata": {
     "app_version": "1.0.0",
-    "description": "Compose reference release covering adoption, service addition and shared volumes.",
-    "source_commit": "b184905"
+    "description": "Compose reference release covering adoption, service addition and shared volumes."
   },
   "compatibility": {
     "os": [
@@ -57,7 +56,7 @@
     "retries": 3,
     "startup_grace_seconds": 20,
     "observation_window_seconds": 90,
-    "success_criteria": "all_services_healthy"
+    "success_criteria": "primary_service_healthy"
   },
   "rollback": {
     "strategy": "previous_release",
@@ -122,6 +121,6 @@
     "key_id": "test-fixture-ed25519-2026",
     "signed_at": "2026-10-24T04:00:00Z",
     "canonicalization": "RFC8785",
-    "signature": "Qf97lRK/+OQT/9WPk2jjMGqlagK/PUEeDf5Prfj+dK/TIPrn1gD58tF+X335l+vgn7VqaUgcyYYxvtVZG2mjCw=="
+    "signature": "sGlhPlINDKDbdvUWEB4UT9GjVwhGxP2X5VU6E1FtBapsy+YXnApRdpLfJ4wO0WI6krrb1/r04qwSrkxQNDJdAg=="
   }
 }

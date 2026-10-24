@@ -1,0 +1,450 @@
+{
+  "schema_version": "1.0",
+  "release_id": "rel-20261024-single-001",
+  "app_id": "demo-single",
+  "release_type": "single_container",
+  "created_at": "2026-10-24T04:00:00Z",
+  "metadata": {
+    "app_version": "1.0.0",
+    "description": "Single-container reference release for the M0 manifest contract."
+  },
+  "compatibility": {
+    "os": [
+      "linux"
+    ],
+    "arch": [
+      "amd64",
+      "arm64"
+    ],
+    "min_agent_version": "0.1.0",
+    "min_docker_version": "29.0.0",
+    "min_compose_version": "5.0.1"
+  },
+  "ownership": {
+    "owner": "ota-team",
+    "compose_project_name": "demo-single",
+    "labels": {
+      "io.dockroll.managed": "true",
+      "io.dockroll.app-id": "demo-single",
+      "io.dockroll.release-id": "rel-20261024-single-001",
+      "io.dockroll.owner": "ota-team"
+    }
+  },
+  "apply_policy": {
+    "strategy": "restart_container"
+  },
+  "health": {
+    "check": {
+      "type": "http",
+      "path": "/healthz",
+      "port": 80,
+      "scheme": "http",
+      "expected_status": 200
+    },
+    "interval_seconds": 10,
+    "timeout_seconds": 3,
+    "retries": 3,
+    "startup_grace_seconds": 20,
+    "observation_window_seconds": 90,
+    "success_criteria": "all_services_healthy"
+  },
+  "rollback": {
+    "strategy": "previous_release",
+    "max_attempts": 1,
+    "failure_action": "escalate",
+    "preserve_volumes": true,
+    "restore_service_set": true,
+    "deadline_seconds": 180
+  },
+  "container": {
+    "image": {
+      "repository": "docker.io/library/nginx",
+      "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "command": [
+      "nginx",
+      "-g",
+      "daemon off;"
+    ],
+    "env": [
+      {
+        "name": "APP_ENV",
+        "value": "production"
+      },
+      {
+        "name": "DB_PASSWORD",
+        "secret_ref": "DB_PASSWORD"
+      }
+    ],
+    "ports": [
+      {
+        "host_ip": "127.0.0.1",
+        "host_port": 18080,
+        "container_port": 80,
+        "protocol": "tcp"
+      }
+    ],
+    "mounts": [
+      {
+        "type": "bind",
+        "source": "/srv/demo-single/config",
+        "target": "/etc/nginx/conf.d",
+        "read_only": true
+      }
+    ],
+    "network": {
+      "mode": "bridge"
+    },
+    "restart_policy": {
+      "name": "unless-stopped"
+    },
+    "resources": {
+      "cpu_millicores": 500,
+      "memory_bytes": 268435456,
+      "pids_limit": 128
+    },
+    "stop_grace_period_seconds": 30
+  },
+  "secrets": [
+    {
+      "name": "SECRET_0",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_0"
+    },
+    {
+      "name": "SECRET_1",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_1"
+    },
+    {
+      "name": "SECRET_2",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_2"
+    },
+    {
+      "name": "SECRET_3",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_3"
+    },
+    {
+      "name": "SECRET_4",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_4"
+    },
+    {
+      "name": "SECRET_5",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_5"
+    },
+    {
+      "name": "SECRET_6",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_6"
+    },
+    {
+      "name": "SECRET_7",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_7"
+    },
+    {
+      "name": "SECRET_8",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_8"
+    },
+    {
+      "name": "SECRET_9",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_9"
+    },
+    {
+      "name": "SECRET_10",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_10"
+    },
+    {
+      "name": "SECRET_11",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_11"
+    },
+    {
+      "name": "SECRET_12",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_12"
+    },
+    {
+      "name": "SECRET_13",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_13"
+    },
+    {
+      "name": "SECRET_14",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_14"
+    },
+    {
+      "name": "SECRET_15",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_15"
+    },
+    {
+      "name": "SECRET_16",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_16"
+    },
+    {
+      "name": "SECRET_17",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_17"
+    },
+    {
+      "name": "SECRET_18",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_18"
+    },
+    {
+      "name": "SECRET_19",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_19"
+    },
+    {
+      "name": "SECRET_20",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_20"
+    },
+    {
+      "name": "SECRET_21",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_21"
+    },
+    {
+      "name": "SECRET_22",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_22"
+    },
+    {
+      "name": "SECRET_23",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_23"
+    },
+    {
+      "name": "SECRET_24",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_24"
+    },
+    {
+      "name": "SECRET_25",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_25"
+    },
+    {
+      "name": "SECRET_26",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_26"
+    },
+    {
+      "name": "SECRET_27",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_27"
+    },
+    {
+      "name": "SECRET_28",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_28"
+    },
+    {
+      "name": "SECRET_29",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_29"
+    },
+    {
+      "name": "SECRET_30",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_30"
+    },
+    {
+      "name": "SECRET_31",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_31"
+    },
+    {
+      "name": "SECRET_32",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_32"
+    },
+    {
+      "name": "SECRET_33",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_33"
+    },
+    {
+      "name": "SECRET_34",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_34"
+    },
+    {
+      "name": "SECRET_35",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_35"
+    },
+    {
+      "name": "SECRET_36",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_36"
+    },
+    {
+      "name": "SECRET_37",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_37"
+    },
+    {
+      "name": "SECRET_38",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_38"
+    },
+    {
+      "name": "SECRET_39",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_39"
+    },
+    {
+      "name": "SECRET_40",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_40"
+    },
+    {
+      "name": "SECRET_41",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_41"
+    },
+    {
+      "name": "SECRET_42",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_42"
+    },
+    {
+      "name": "SECRET_43",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_43"
+    },
+    {
+      "name": "SECRET_44",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_44"
+    },
+    {
+      "name": "SECRET_45",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_45"
+    },
+    {
+      "name": "SECRET_46",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_46"
+    },
+    {
+      "name": "SECRET_47",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_47"
+    },
+    {
+      "name": "SECRET_48",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_48"
+    },
+    {
+      "name": "SECRET_49",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_49"
+    },
+    {
+      "name": "SECRET_50",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_50"
+    },
+    {
+      "name": "SECRET_51",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_51"
+    },
+    {
+      "name": "SECRET_52",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_52"
+    },
+    {
+      "name": "SECRET_53",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_53"
+    },
+    {
+      "name": "SECRET_54",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_54"
+    },
+    {
+      "name": "SECRET_55",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_55"
+    },
+    {
+      "name": "SECRET_56",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_56"
+    },
+    {
+      "name": "SECRET_57",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_57"
+    },
+    {
+      "name": "SECRET_58",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_58"
+    },
+    {
+      "name": "SECRET_59",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_59"
+    },
+    {
+      "name": "SECRET_60",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_60"
+    },
+    {
+      "name": "SECRET_61",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_61"
+    },
+    {
+      "name": "SECRET_62",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_62"
+    },
+    {
+      "name": "SECRET_63",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_63"
+    },
+    {
+      "name": "SECRET_64",
+      "provider": "file",
+      "ref": "/run/dockroll-secrets/secret_64"
+    }
+  ],
+  "signature": {
+    "algorithm": "ed25519",
+    "key_id": "test-fixture-ed25519-2026",
+    "signed_at": "2026-10-24T04:00:00Z",
+    "canonicalization": "RFC8785",
+    "signature": "mGTEN955mpCT/4rA+RRJf0BVMPOo95y0w4WIEZeB9LfKrflIMoQeMP0tCRspkYKsQ7wtE3q9WTn2HotGBYF+AA=="
+  },
+  "shared_resources": [
+    {
+      "kind": "bind_path",
+      "name": "demo-single-config",
+      "path": "/srv/demo-single/config",
+      "protection": "preserve"
+    }
+  ]
+}

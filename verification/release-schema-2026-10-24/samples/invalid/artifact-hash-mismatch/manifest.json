@@ -6,8 +6,7 @@
   "created_at": "2026-10-24T04:00:00Z",
   "metadata": {
     "app_version": "1.0.0",
-    "description": "Configuration reference release with hash, size, ownership and reload policy.",
-    "source_commit": "b184905"
+    "description": "Configuration reference release with hash, size, ownership and reload policy."
   },
   "compatibility": {
     "os": [
@@ -86,6 +85,6 @@
     "key_id": "test-fixture-ed25519-2026",
     "signed_at": "2026-10-24T04:00:00Z",
     "canonicalization": "RFC8785",
-    "signature": "mmUjt1VnL1mK+qToxbKFjIkj03KZUa3qEjoXgyEkDo5PsC86OeurEhz5ZupvV+W8H9x9d68d88LEP3n8ZnvgAQ=="
+    "signature": "3Ec7F0/4gOsK4FojWVKMfgZg5EVO0o2Dz603TsBfWTbJs5Q+9mJImBZih7pGru76ShWmLBarm7NMm41hOVpDBw=="
   }
 }

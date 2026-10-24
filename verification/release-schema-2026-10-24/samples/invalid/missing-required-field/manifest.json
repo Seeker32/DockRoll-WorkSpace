@@ -6,8 +6,7 @@
   "created_at": "2026-10-24T04:00:00Z",
   "metadata": {
     "app_version": "1.0.0",
-    "description": "Single-container reference release for the M0 manifest contract.",
-    "source_commit": "b184905"
+    "description": "Single-container reference release for the M0 manifest contract."
   },
   "compatibility": {
     "os": [
@@ -95,7 +94,7 @@
     {
       "name": "DB_PASSWORD",
       "provider": "file",
-      "ref": "/run/secrets/db_password"
+      "ref": "/run/dockroll-secrets/db_password"
     }
   ],
   "signature": {
@@ -103,6 +102,14 @@
     "key_id": "test-fixture-ed25519-2026",
     "signed_at": "2026-10-24T04:00:00Z",
     "canonicalization": "RFC8785",
-    "signature": "7Fs+iw0Y2WRbFZqGolincZNnffBPK5Rj49nghvGChKyQg1K0S2FM7McWK6PcZX9fleq76VDq7/REALeucwABCQ=="
-  }
+    "signature": "PnC1lBCvcHMzg2uWf7L8fLwFBlbupYFe1GeKKFwe3DEv3pAjS4V51Bc8t8VQe+AcQGcWeUYGKP/GGReX9sdVDQ=="
+  },
+  "shared_resources": [
+    {
+      "kind": "bind_path",
+      "name": "demo-single-config",
+      "path": "/srv/demo-single/config",
+      "protection": "preserve"
+    }
+  ]
 }

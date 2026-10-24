@@ -23,7 +23,7 @@ for package in ("jsonschema", "cryptography"):
     except metadata.PackageNotFoundError:
         print(f"{package}=missing")
 PY
-echo "wiki_head=$(git -C ../.. rev-parse HEAD 2>/dev/null || echo unknown)"
+echo "workspace_head=$(git -C ../.. rev-parse HEAD 2>/dev/null || echo unknown)"
 echo
 
 echo "## JSON Schema self-check"
@@ -88,7 +88,46 @@ secret-ref-unknown|is not declared in secrets[]
 config-target-outside-root|managed app root
 config-mode-world-writable|world-writable
 compose-duplicate-service|duplicate compose service name
+secret-ref-unmanaged|does not match '^/run/dockroll-secrets/
+bind-path-relative|shared_resources[0].path
+invalid-timestamp|not a valid UTC timestamp
+timestamp-order|signed_at must not be earlier than created_at
+duplicate-env-name|duplicate environment variable name
+host-network-ports|ports must not be declared when network.mode is host or none
+restart-on-failure-no-retries|missing required field 'max_retries'
+platform-arch-mismatch|is not covered by compatibility.arch
+health-timeout-exceeds-interval|must be less than interval_seconds
+label-key-invalid|does not match '^[a-z0-9]
+too-many-secrets|violates maxItems=64
+bind-mount-docker-sock|Docker socket must not be bind-mounted
+bind-mount-outside-allowlist|outside the allowlist
+bind-mount-writable-config|must be read_only
+bind-mount-other-app|under the app-specific root
 CASES
+
+echo "## Manifest size guard (pre-parse 1 MiB limit)"
+oversize="output/.tmp-too-large-manifest.json"
+python3 - <<'PY'
+import json
+from pathlib import Path
+base = json.loads(Path("samples/valid/single-container/manifest.json").read_text())
+base["metadata"]["description"] = "x" * (1024 * 1024)
+Path("output/.tmp-too-large-manifest.json").write_text(json.dumps(base, separators=(",", ":")))
+PY
+if output=$(python3 validate_manifest.py "$oversize" 2>&1); then
+    rc=0
+else
+    rc=$?
+fi
+echo "$output"
+if [ "$rc" -eq 1 ] && grep -qF "manifest.too-large" <<<"$output"; then
+    echo "EXPECTED REJECT: oversized manifest -> OK"
+else
+    echo "EXPECTED REJECT: oversized manifest -> FAILED"
+    failures=$((failures + 1))
+fi
+rm -f "$oversize"
+echo
 
 echo "## Fixture hashes"
 find . -type f ! -path './output/*' ! -path './__pycache__/*' -print0 \
@@ -106,4 +145,4 @@ if [ "$failures" -ne 0 ]; then
     echo "RESULT: FAIL ($failures expectation(s) not met)"
     exit 1
 fi
-echo "RESULT: PASS (3 valid fixtures accepted, 12 invalid fixtures rejected)"
+echo "RESULT: PASS (3 valid fixtures accepted, 27 invalid fixtures rejected, oversized manifest rejected)"
