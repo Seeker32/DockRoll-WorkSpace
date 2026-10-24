@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0",
+  "release_id": "rel-20261024-compose-002",
+  "app_id": "demo-compose",
+  "release_type": "compose",
+  "created_at": "2026-10-24T04:00:00Z",
+  "metadata": {
+    "app_version": "1.0.0",
+    "description": "Compose reference release covering adoption, service addition and shared volumes.",
+    "source_commit": "b184905"
+  },
+  "compatibility": {
+    "os": [
+      "linux"
+    ],
+    "arch": [
+      "amd64",
+      "arm64"
+    ],
+    "min_agent_version": "0.1.0",
+    "min_docker_version": "29.0.0",
+    "min_compose_version": "5.0.1"
+  },
+  "ownership": {
+    "owner": "ota-team",
+    "compose_project_name": "demo-compose-alt",
+    "labels": {
+      "io.dockroll.managed": "true",
+      "io.dockroll.app-id": "demo-compose",
+      "io.dockroll.release-id": "rel-20261024-compose-002",
+      "io.dockroll.owner": "ota-team"
+    }
+  },
+  "apply_policy": {
+    "strategy": "reload",
+    "reload": {
+      "command": [
+        "nginx",
+        "-s",
+        "reload"
+      ],
+      "timeout_seconds": 30,
+      "service": "api"
+    }
+  },
+  "health": {
+    "check": {
+      "type": "http",
+      "path": "/healthz",
+      "port": 80,
+      "scheme": "http",
+      "expected_status": 200,
+      "service": "api"
+    },
+    "interval_seconds": 10,
+    "timeout_seconds": 3,
+    "retries": 3,
+    "startup_grace_seconds": 20,
+    "observation_window_seconds": 90,
+    "success_criteria": "all_services_healthy"
+  },
+  "rollback": {
+    "strategy": "previous_release",
+    "max_attempts": 1,
+    "failure_action": "escalate",
+    "preserve_volumes": true,
+    "restore_service_set": true,
+    "deadline_seconds": 180
+  },
+  "takeover": {
+    "mode": "adopt_existing",
+    "existing_project_name": "demo-compose",
+    "existing_services": [
+      "api"
+    ],
+    "preserve_shared_resources": [
+      "demo-compose-data"
+    ]
+  },
+  "shared_resources": [
+    {
+      "kind": "volume",
+      "name": "demo-compose-data",
+      "protection": "preserve"
+    }
+  ],
+  "compose": {
+    "file": {
+      "path": "compose.yaml",
+      "sha256": "8fc3100cf46c43a69c8525e45aa9352c82dfe841f887111de9907328066265ea",
+      "size_bytes": 739
+    },
+    "services": [
+      {
+        "name": "api",
+        "image": {
+          "repository": "docker.io/library/nginx",
+          "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "required": true
+      },
+      {
+        "name": "worker",
+        "image": {
+          "repository": "docker.io/library/busybox",
+          "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        },
+        "required": true
+      }
+    ]
+  },
+  "signature": {
+    "algorithm": "ed25519",
+    "key_id": "test-fixture-ed25519-2026",
+    "signed_at": "2026-10-24T04:00:00Z",
+    "canonicalization": "RFC8785",
+    "signature": "6qN9TDsXarJ+zDuY789GrROTZfUM0HaBzVr4jxfgC96dG1xGPkSEozS1FswRunyaJHOkC45tsa2FshjYZorRBg=="
+  }
+}

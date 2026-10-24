@@ -1,0 +1,16 @@
+# step: post-down-networks
+# started_at: 2026-10-24T03:22:34.809+00:00
+# compose_version: 5.6.0
+# arch: arm64
+# project: ota-compat-560-arm64-20261024t113000
+# command: docker network ls --filter label=com.docker.compose.project=ota-compat-560-arm64-20261024t113000 --format '{{.Name}}'
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 61
+
+=== stdout ===
+
+
+=== stderr ===
+

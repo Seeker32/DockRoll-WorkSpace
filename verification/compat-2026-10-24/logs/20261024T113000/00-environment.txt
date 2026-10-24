@@ -1,0 +1,105 @@
+run_id: 20261024T113000
+2026-10-24T11:21:25+08:00
+
+Linux DESKTOP-8VKKL4J 6.6.114.1-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Mon Dec  1 20:46:23 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+
+PRETTY_NAME="Ubuntu 24.04.4 LTS"
+NAME="Ubuntu"
+VERSION_ID="24.04"
+VERSION="24.04.4 LTS (Noble Numbat)"
+VERSION_CODENAME=noble
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=noble
+LOGO=ubuntu-logo
+
+nproc: 16
+MemTotal:       15917128 kB
+MemAvailable:   12595860 kB
+    1B-blocks        Used        Avail Use% Mounted on
+1081101176832 87740882944 938367938560   9% /home/seeker32/projects/ota
+
+== service manager ==
+systemd 255 (255.4-1ubuntu8.18)
+running
+inactive
+supervisord: not found
+dpkg-query: no packages found matching supervisor
+
+== docker ==
+Client:
+ Version:           29.9.2
+ API version:       1.56
+ Go version:        go1.26.10
+ Git commit:        a82e528
+ Built:             Tue Oct 20 18:44:02 2026
+ OS/Arch:           linux/amd64
+ Context:           default
+
+Server: Docker Desktop 4.96.3 (244472)
+ Engine:
+  Version:          29.9.2
+  API version:      1.56 (minimum version 1.40)
+  Go version:       go1.26.10
+  Git commit:       0367cbe
+  Built:            Tue Oct 20 18:45:02 2026
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          v2.4.2
+  GitCommit:        b7a25261e029d68978bbf290df0a62fc819b3c51
+ runc:
+  Version:          1.5.2
+  GitCommit:        v1.5.2-0-g29dd3dc2
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+
+ServerVersion=29.9.2
+OperatingSystem=Docker Desktop OSType=linux Architecture=x86_64
+KernelVersion=6.6.114.1-microsoft-standard-WSL2
+Driver=overlayfs
+DockerRootDir=/var/lib/docker
+api=1.56 min_api=1.40
+components=[{"Name":"Engine","Version":"29.9.2","Details":{"ApiVersion":"1.56","Arch":"amd64","BuildTime":"Tue Oct 20 18:45:02 2026","Experimental":"false","GitCommit":"0367cbe","GoVersion":"go1.26.10","KernelVersion":"6.6.114.1-microsoft-standard-WSL2","MinAPIVersion":"1.40","Module":"github.com/moby/moby/v2","ModuleVersion":"v2.0.0+unknown","Os":"linux"}},{"Name":"containerd","Version":"v2.4.2","Details":{"GitCommit":"b7a25261e029d68978bbf290df0a62fc819b3c51"}},{"Name":"runc","Version":"1.5.2","Details":{"GitCommit":"v1.5.2-0-g29dd3dc2"}},{"Name":"docker-init","Version":"0.19.0","Details":{"GitCommit":"de40ad0"}}]
+default
+srw-rw---- 1 nobody nogroup 0 Oct 24 10:57 /var/run/docker.sock
+
+== compose ==
+Docker Compose version v5.6.1
+5.6.1
+/usr/bin/docker-compose
+/mnt/wsl/docker-desktop/cli-tools/usr/local/lib/docker/cli-plugins/docker-compose
+Docker Compose version v5.6.1
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'compose'
+
+== go ==
+go version go1.26.0 linux/amd64
+GOROOT=/home/seeker32/.goenv/versions/1.26.0
+
+== proxy presence (values intentionally hidden) ==
+GOPROXY=<set>
+
+== git ==
+99fa192ec4a2a717c89d181575f8c9799cd6ed56
+ M evidence/M0-Evidence-Index.md
+ M stories/Story-Compatibility-Matrix.md
+ M stories/Story-Device-Baseline.md
+ M technical/Device-Support-Baseline.md
+ M technical/Existing-Deployment-Inventory.md
+ M technical/roadmap.md
+?? evidence/Local-Container-Inventory-2026-10-23.md
+?? evidence/WSL-Ubuntu-24.04-Baseline-2026-10-23.md
+?? evidence/compat-2026-10-24/
+
+== image digest ==
+["busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e"]
+
+== ports (target range) ==
+target ports 18101-18103/18111-18113 are free

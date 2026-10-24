@@ -1,0 +1,12 @@
+# Timeout sample: `up -d --wait` cannot succeed quickly, so a killed CLI leaves
+# real daemon-side state behind. Used by the os/exec.CommandContext probe.
+services:
+  slow:
+    image: busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e
+    command: ["sh", "-c", "sleep 120"]
+    healthcheck:
+      test: ["CMD", "false"]
+      interval: 2s
+      timeout: 1s
+      retries: 30
+    restart: "no"

@@ -1,0 +1,4 @@
+[5.0.1/amd64] 16/16 checks passed (PASS) -> /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.0.1-amd64/summary.json
+[5.0.0/amd64] 2/2 checks passed (PASS) -> /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.0.0-amd64/summary.json
+[5.6.0/amd64] 16/16 checks passed (PASS) -> /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.0-amd64/summary.json
+[5.6.1/amd64] 16/16 checks passed (PASS) -> /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/summary.json

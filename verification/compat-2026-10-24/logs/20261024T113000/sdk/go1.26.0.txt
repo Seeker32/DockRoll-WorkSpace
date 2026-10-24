@@ -1,0 +1,18 @@
+{
+  "go_version": "go1.26.0",
+  "go_os": "linux",
+  "go_arch": "amd64",
+  "client_module": "github.com/moby/moby/client",
+  "client_module_version": "v0.6.2",
+  "client_max_api": "1.56",
+  "client_min_api": "1.40",
+  "negotiated_api": "1.56",
+  "ping_api_version": "1.56",
+  "server_version": "29.9.2",
+  "server_api_version": "1.56",
+  "server_min_api_version": "1.40",
+  "server_os": "linux",
+  "server_arch": "amd64",
+  "platform": "Docker Desktop 4.96.3 (244472)",
+  "containers_total": 4
+}

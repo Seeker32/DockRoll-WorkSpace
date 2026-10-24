@@ -1,0 +1,790 @@
+{
+  "run_id": "20261024T113000",
+  "compose_version": "5.6.0",
+  "arch": "amd64",
+  "project": "ota-compat-560-amd64-20261024t113000",
+  "port": 18102,
+  "compose_binary": "/home/seeker32/projects/ota/.tmp/compat/bin/docker-compose-5.6.0-amd64",
+  "compose_binary_sha256": "40343e21ca777173e69cff5dbafeb37c6f81f3b0d57d9e597f036e95eb63e76a",
+  "started_at": "2026-10-24T03:21:40.055+00:00",
+  "finished_at": "2026-10-24T03:21:53.757+00:00",
+  "passed": true,
+  "checks_total": 41,
+  "checks_passed": 41,
+  "checks": [
+    {
+      "name": "compose version --short",
+      "expected": "5.6.0",
+      "actual": "5.6.0",
+      "ok": true
+    },
+    {
+      "name": "config --quiet exit code",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "config exit code",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "config contains pinned digest",
+      "expected": "busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+      "actual": "busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+      "ok": true
+    },
+    {
+      "name": "config contains healthcheck",
+      "expected": "healthcheck",
+      "actual": "healthcheck",
+      "ok": true
+    },
+    {
+      "name": "config contains resolved restart",
+      "expected": "unless-stopped",
+      "actual": "unless-stopped",
+      "ok": true
+    },
+    {
+      "name": "config resolves HOST_PORT",
+      "expected": "published: \"18102\"",
+      "actual": "published: \"18102\"",
+      "ok": true
+    },
+    {
+      "name": "config resolves APP_VERSION",
+      "expected": "APP_VERSION: \"1\"",
+      "actual": "present",
+      "ok": true
+    },
+    {
+      "name": "config --format json supported",
+      "expected": "exit 0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "config json image digest",
+      "expected": "busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+      "actual": "busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+      "ok": true
+    },
+    {
+      "name": "pull exit code",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "up -d exit code",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "ps exit code",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "ps web state",
+      "expected": "running",
+      "actual": "running",
+      "ok": true
+    },
+    {
+      "name": "ps web health",
+      "expected": "healthy",
+      "actual": "healthy",
+      "ok": true
+    },
+    {
+      "name": "ps worker state",
+      "expected": "running",
+      "actual": "running",
+      "ok": true
+    },
+    {
+      "name": "ps wait attempts <= 60",
+      "expected": "<= 60",
+      "actual": "1",
+      "ok": true
+    },
+    {
+      "name": "ps exit code (plain)",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "ps plain shows web healthy",
+      "expected": "healthy",
+      "actual": "healthy",
+      "ok": true
+    },
+    {
+      "name": "ps exit code (final)",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "env APP_VERSION",
+      "expected": "1",
+      "actual": "1",
+      "ok": true
+    },
+    {
+      "name": "config dir mount initial",
+      "expected": "cfg-1",
+      "actual": "cfg-1",
+      "ok": true
+    },
+    {
+      "name": "named volume initial",
+      "expected": "1",
+      "actual": "1",
+      "ok": true
+    },
+    {
+      "name": "env_file WORKER_TOKEN",
+      "expected": "env-file-token",
+      "actual": "env-file-token",
+      "ok": true
+    },
+    {
+      "name": "shared named volume",
+      "expected": "worker-ok",
+      "actual": "present",
+      "ok": true
+    },
+    {
+      "name": "host port /version initial",
+      "expected": "version-1",
+      "actual": "version-1",
+      "ok": true
+    },
+    {
+      "name": "bind mount reflects host update",
+      "expected": "version-2",
+      "actual": "version-2",
+      "ok": true
+    },
+    {
+      "name": "config dir reflects host update",
+      "expected": "cfg-2",
+      "actual": "cfg-2",
+      "ok": true
+    },
+    {
+      "name": "web restart policy",
+      "expected": "unless-stopped",
+      "actual": "unless-stopped",
+      "ok": true
+    },
+    {
+      "name": "worker restart policy",
+      "expected": "on-failure:2",
+      "actual": "on-failure:2",
+      "ok": true
+    },
+    {
+      "name": "healthcheck status",
+      "expected": "healthy",
+      "actual": "healthy",
+      "ok": true
+    },
+    {
+      "name": "runtime image digest",
+      "expected": "busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+      "actual": "busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e",
+      "ok": true
+    },
+    {
+      "name": "named volume exists",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "volume project label",
+      "expected": "ota-compat-560-amd64-20261024t113000_data",
+      "actual": "ota-compat-560-amd64-20261024t113000_data",
+      "ok": true
+    },
+    {
+      "name": "down exit code",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "down did not use -v",
+      "expected": "no volume removal flag",
+      "actual": "no volume removal flag",
+      "ok": true
+    },
+    {
+      "name": "post-down containers removed",
+      "expected": "",
+      "actual": "",
+      "ok": true
+    },
+    {
+      "name": "post-down network removed",
+      "expected": "",
+      "actual": "",
+      "ok": true
+    },
+    {
+      "name": "post-down named volume retained",
+      "expected": "ota-compat-560-amd64-20261024t113000_data",
+      "actual": "ota-compat-560-amd64-20261024t113000_data",
+      "ok": true
+    },
+    {
+      "name": "bind files retained after down",
+      "expected": "present",
+      "actual": "present",
+      "ok": true
+    },
+    {
+      "name": "explicit test volume cleanup",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    }
+  ],
+  "extra": {},
+  "commands": [
+    {
+      "step": "version",
+      "argv": [
+        "docker",
+        "compose",
+        "version",
+        "--short"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 68,
+      "log": "01-version.log"
+    },
+    {
+      "step": "config-quiet",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "config",
+        "--quiet"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 123,
+      "log": "02-config-quiet.log"
+    },
+    {
+      "step": "config",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "config"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 123,
+      "log": "03-config.log"
+    },
+    {
+      "step": "config-json",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "config",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 122,
+      "log": "04-config-json.log"
+    },
+    {
+      "step": "pull",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "pull"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 2104,
+      "log": "05-pull.log"
+    },
+    {
+      "step": "up",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "up",
+        "-d"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 1748,
+      "log": "06-up.log"
+    },
+    {
+      "step": "ps-poll",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "ps",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 155,
+      "log": "07-ps-poll.log"
+    },
+    {
+      "step": "ps-plain",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "ps"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 153,
+      "log": "08-ps-plain.log"
+    },
+    {
+      "step": "ps",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "ps",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 154,
+      "log": "09-ps.log"
+    },
+    {
+      "step": "ps-web-id",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "ps",
+        "-q",
+        "web"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 148,
+      "log": "10-ps-web-id.log"
+    },
+    {
+      "step": "ps-worker-id",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "ps",
+        "-q",
+        "worker"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 153,
+      "log": "11-ps-worker-id.log"
+    },
+    {
+      "step": "exec-env",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "exec",
+        "-T",
+        "web",
+        "printenv",
+        "APP_VERSION"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 178,
+      "log": "12-exec-env.log"
+    },
+    {
+      "step": "exec-config",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "exec",
+        "-T",
+        "web",
+        "cat",
+        "/config/app.conf"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 179,
+      "log": "13-exec-config.log"
+    },
+    {
+      "step": "exec-volume",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "exec",
+        "-T",
+        "web",
+        "cat",
+        "/data/app-version"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 181,
+      "log": "14-exec-volume.log"
+    },
+    {
+      "step": "exec-env-file",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "exec",
+        "-T",
+        "worker",
+        "printenv",
+        "WORKER_TOKEN"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 177,
+      "log": "15-exec-env-file.log"
+    },
+    {
+      "step": "exec-shared-volume",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "exec",
+        "-T",
+        "worker",
+        "cat",
+        "/data/worker.log"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 180,
+      "log": "16-exec-shared-volume.log"
+    },
+    {
+      "step": "http-initial",
+      "argv": [
+        "GET",
+        "http://127.0.0.1:18102/version"
+      ],
+      "exit_code": 200,
+      "timed_out": false,
+      "duration_ms": 12,
+      "log": "17-http-initial.log"
+    },
+    {
+      "step": "http-bind-updated",
+      "argv": [
+        "GET",
+        "http://127.0.0.1:18102/version"
+      ],
+      "exit_code": 200,
+      "timed_out": false,
+      "duration_ms": 0,
+      "log": "18-http-bind-updated.log"
+    },
+    {
+      "step": "exec-config-updated",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "exec",
+        "-T",
+        "web",
+        "cat",
+        "/config/app.conf"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 184,
+      "log": "19-exec-config-updated.log"
+    },
+    {
+      "step": "inspect-restart",
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .HostConfig.RestartPolicy}}",
+        "9ec3af29d8c3cd3a30d0af18466ad3261d9babe19ea0e5a2b40dfee5a45826e5"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 62,
+      "log": "20-inspect-restart.log"
+    },
+    {
+      "step": "inspect-worker-restart",
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .HostConfig.RestartPolicy}}",
+        "bbd300b96068c0260e5fbf347d383af17e7e12ea855c57bf8e88b131d6ea8288"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 65,
+      "log": "21-inspect-worker-restart.log"
+    },
+    {
+      "step": "inspect-health",
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{json .State.Health}}",
+        "9ec3af29d8c3cd3a30d0af18466ad3261d9babe19ea0e5a2b40dfee5a45826e5"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 63,
+      "log": "22-inspect-health.log"
+    },
+    {
+      "step": "inspect-image",
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.Config.Image}}",
+        "9ec3af29d8c3cd3a30d0af18466ad3261d9babe19ea0e5a2b40dfee5a45826e5"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 63,
+      "log": "23-inspect-image.log"
+    },
+    {
+      "step": "volume-inspect",
+      "argv": [
+        "docker",
+        "volume",
+        "inspect",
+        "ota-compat-560-amd64-20261024t113000_data",
+        "--format",
+        "{{json .}}"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 65,
+      "log": "24-volume-inspect.log"
+    },
+    {
+      "step": "volume-labels",
+      "argv": [
+        "docker",
+        "volume",
+        "ls",
+        "--filter",
+        "label=com.docker.compose.project=ota-compat-560-amd64-20261024t113000",
+        "--format",
+        "{{.Name}}"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 65,
+      "log": "25-volume-labels.log"
+    },
+    {
+      "step": "down",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-compat-560-amd64-20261024t113000",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project",
+        "down"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 6875,
+      "log": "26-down.log"
+    },
+    {
+      "step": "post-down-containers",
+      "argv": [
+        "docker",
+        "ps",
+        "-a",
+        "--filter",
+        "label=com.docker.compose.project=ota-compat-560-amd64-20261024t113000",
+        "--format",
+        "{{.Names}}"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 65,
+      "log": "27-post-down-containers.log"
+    },
+    {
+      "step": "post-down-networks",
+      "argv": [
+        "docker",
+        "network",
+        "ls",
+        "--filter",
+        "label=com.docker.compose.project=ota-compat-560-amd64-20261024t113000",
+        "--format",
+        "{{.Name}}"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 65,
+      "log": "28-post-down-networks.log"
+    },
+    {
+      "step": "post-down-volume",
+      "argv": [
+        "docker",
+        "volume",
+        "ls",
+        "--filter",
+        "name=ota-compat-560-amd64-20261024t113000_data",
+        "--format",
+        "{{.Name}}"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 64,
+      "log": "29-post-down-volume.log"
+    },
+    {
+      "step": "cleanup-volume",
+      "argv": [
+        "docker",
+        "volume",
+        "rm",
+        "ota-compat-560-amd64-20261024t113000_data"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 64,
+      "log": "30-cleanup-volume.log"
+    }
+  ]
+}

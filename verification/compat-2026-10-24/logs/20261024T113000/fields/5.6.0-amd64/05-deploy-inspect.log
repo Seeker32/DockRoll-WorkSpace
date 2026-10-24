@@ -1,0 +1,16 @@
+# step: deploy-inspect
+# started_at: 2026-10-24T03:23:43.037+00:00
+# compose_version: 5.6.0
+# arch: amd64
+# project: ota-fields-560-deploy
+# command: docker inspect --format '{{.HostConfig.NanoCpus}} {{.HostConfig.Memory}}' f01c86fde62f397d09edd596fcd9b774c6f4718a3684afa25ed7b77a5837bc6d
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 63
+
+=== stdout ===
+500000000 67108864
+
+=== stderr ===
+

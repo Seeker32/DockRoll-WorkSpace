@@ -1,0 +1,16 @@
+# step: inspect-image
+# started_at: 2026-10-24T03:21:53.800+00:00
+# compose_version: 5.6.1
+# arch: amd64
+# project: ota-compat-561-amd64-20261024t113000
+# command: docker inspect --format '{{.Config.Image}}' 50b350b76ee6320eab149b2a3f4121253a633e5e09aa40bba0ea61fd0b1f19cc
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 63
+
+=== stdout ===
+busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e
+
+=== stderr ===
+

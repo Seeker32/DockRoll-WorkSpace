@@ -1,0 +1,24 @@
+name: demo-compose
+services:
+  api:
+    image: docker.io/library/nginx@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:18081:80"
+    volumes:
+      - ./config:/etc/demo:ro
+      - demo-compose-data:/var/lib/demo
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1/healthz"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+  worker:
+    image: docker.io/library/busybox@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+    command: ["sh", "-c", "while true; do sleep 30; done"]
+    restart: unless-stopped
+    volumes:
+      - demo-compose-data:/data
+volumes:
+  demo-compose-data:
+    name: demo-compose-data

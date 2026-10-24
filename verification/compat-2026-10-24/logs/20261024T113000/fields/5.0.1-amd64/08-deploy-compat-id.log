@@ -1,0 +1,16 @@
+# step: deploy-compat-id
+# started_at: 2026-10-24T03:23:30.403+00:00
+# compose_version: 5.0.1
+# arch: amd64
+# project: ota-fields-501-deploy
+# command: docker compose -p ota-fields-501-deploy -f /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.0.1-amd64/project/compose-deploy.yaml --project-directory /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.0.1-amd64/project ps -q limited
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 150
+
+=== stdout ===
+bd085ee0f416dddf58dd99ff77bbcf54f5b802b33f676f6511522aa798b8ac6b
+
+=== stderr ===
+

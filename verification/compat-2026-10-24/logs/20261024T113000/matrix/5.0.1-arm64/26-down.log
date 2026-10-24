@@ -1,0 +1,25 @@
+# step: down
+# started_at: 2026-10-24T03:22:07.340+00:00
+# compose_version: 5.0.1
+# arch: arm64
+# project: ota-compat-501-arm64-20261024t113000
+# command: docker run --rm --platform linux/arm64 --label ota-compat.cli-run=20261024T113000 -v /var/run/docker.sock:/var/run/docker.sock -v /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.0.1-arm64/project:/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.0.1-arm64/project -v /home/seeker32/projects/ota/.tmp/compat/bin/docker-compose-5.0.1-arm64:/usr/local/bin/docker-compose:ro -v /etc/ssl/certs:/etc/ssl/certs:ro -e HOST_PORT=18111 -e APP_VERSION=1 -w /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.0.1-arm64/project busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e /usr/local/bin/docker-compose -p ota-compat-501-arm64-20261024t113000 -f /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.0.1-arm64/project/compose.yaml --project-directory /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.0.1-arm64/project down
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 7738
+
+=== stdout ===
+
+
+=== stderr ===
+ Container ota-compat-501-arm64-20261024t113000-worker-1 Stopping 
+ Container ota-compat-501-arm64-20261024t113000-worker-1 Stopped 
+ Container ota-compat-501-arm64-20261024t113000-worker-1 Removing 
+ Container ota-compat-501-arm64-20261024t113000-worker-1 Removed 
+ Container ota-compat-501-arm64-20261024t113000-web-1 Stopping 
+ Container ota-compat-501-arm64-20261024t113000-web-1 Stopped 
+ Container ota-compat-501-arm64-20261024t113000-web-1 Removing 
+ Container ota-compat-501-arm64-20261024t113000-web-1 Removed 
+ Network ota-compat-501-arm64-20261024t113000_default Removing 
+ Network ota-compat-501-arm64-20261024t113000_default Removed 

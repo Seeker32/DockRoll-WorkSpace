@@ -1,0 +1,16 @@
+# step: volume-inspect
+# started_at: 2026-10-24T03:21:40.055+00:00
+# compose_version: 5.6.0
+# arch: amd64
+# project: ota-compat-560-amd64-20261024t113000
+# command: docker volume inspect ota-compat-560-amd64-20261024t113000_data --format '{{json .}}'
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 65
+
+=== stdout ===
+{"CreatedAt":"2026-10-24T03:21:42Z","Driver":"local","Labels":{"com.docker.compose.config-hash":"57051a06edff33377529e13595672be9970f9efc3a065ee308742703f9edb74d","com.docker.compose.project":"ota-compat-560-amd64-20261024t113000","com.docker.compose.version":"5.6.0","com.docker.compose.volume":"data"},"Mountpoint":"/var/lib/docker/volumes/ota-compat-560-amd64-20261024t113000_data/_data","Name":"ota-compat-560-amd64-20261024t113000_data","Options":null,"Scope":"local"}
+
+=== stderr ===
+

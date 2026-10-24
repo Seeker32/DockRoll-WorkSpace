@@ -1,0 +1,36 @@
+/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/tools/sdkprobe-go1.27.3: go1.27.3
+	path	ota-compat/sdkprobe
+	mod	ota-compat/sdkprobe	(devel)	
+	dep	github.com/containerd/errdefs	v1.0.0	h1:tg5yIfIlQIrxYtu9ajqY42W3lpS19XqdxRQeEwYG8PI=
+	dep	github.com/containerd/errdefs/pkg	v0.3.0	h1:9IKJ06FvyNlexW690DXuQNx2KA2cUJXx151Xdx3ZPPE=
+	dep	github.com/distribution/reference	v0.6.0	h1:0IXCQ5g4/QMHHkarYzh5l+u8T3t73zM5QvfrDyIgxBk=
+	dep	github.com/docker/go-connections	v0.8.2	h1:9d9DEokx5W7qlr0shkFXIxEA7+TTD+llwzcykSlxMNc=
+	dep	github.com/docker/go-units	v0.5.0	h1:69rxXcBk27SvSaaxTtLh/8llcHD8vYHT7WSdRZ/jvr4=
+	dep	github.com/felixge/httpsnoop	v1.0.4	h1:NFTV2Zj1bL4mc9sqWACXbQFVBBg2W3GPvqp8/ESS2Wg=
+	dep	github.com/go-logr/logr	v1.4.2	h1:6pFjapn8bFcIbiKo3XT4j/BhANplGihG6tvd+8rYgrY=
+	dep	github.com/go-logr/stdr	v1.2.2	h1:hSWxHoqTgW2S2qGc0LTAI563KZ5YKYRhT3MFKZMbjag=
+	dep	github.com/moby/docker-image-spec	v1.3.1	h1:jMKff3w6PgbfSa69GfNg+zN/XLhfXJGnEx3Nl2EsFP0=
+	dep	github.com/moby/moby/api	v1.56.1	h1:PpWkvVPB7Fr/No8w+TfyJ/I6rWZ2YPZhT3JorIg+06c=
+	dep	github.com/moby/moby/client	v0.6.2	h1:ekSPlMccrZGcw6Scb8T9D39qE0mB+XupU/yS0zNw9N4=
+	dep	github.com/opencontainers/go-digest	v1.0.0	h1:apOUWs51W5PlhuyGyz9FCeeBIOUDA/6nW8Oi/yOhh5U=
+	dep	github.com/opencontainers/image-spec	v1.1.1	h1:y0fUlFfIZhPF1W537XOLg0/fcx6zcHCJwooC2xJA040=
+	dep	go.opentelemetry.io/auto/sdk	v1.1.0	h1:cH53jehLUN6UFLY71z+NDOiNJqDdPRaXzTel0sJySYA=
+	dep	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp	v0.60.0	h1:sbiXRNDSWJOTobXh5HyQKjq6wUC5tNybqjIqDpAY4CU=
+	dep	go.opentelemetry.io/otel	v1.35.0	h1:xKWKPxrxB6OtMCbmMY021CqC45J+3Onta9MqjhnusiQ=
+	dep	go.opentelemetry.io/otel/metric	v1.35.0	h1:0znxYu2SNyuMSQT4Y9WDWej0VpcsxkuklLa4/siN90M=
+	dep	go.opentelemetry.io/otel/trace	v1.35.0	h1:dPpEfJu1sDIqruz7BHFG3c7528f6ddfSWfFDVt/xgMs=
+	build	-buildmode=exe
+	build	-compiler=gc
+	build	DefaultGODEBUG=containermaxprocs=0,cryptocustomrand=1,decoratemappings=0,httpservecontentmaxranges=1,tlssecpmlkem=0,tlssha1=1,tracebacklabels=0,updatemaxprocs=0,urlstrictcolons=0,x509sha256skid=0,x509sslcertoverrideplatform=0
+	build	CGO_ENABLED=1
+	build	CGO_CFLAGS=
+	build	CGO_CPPFLAGS=
+	build	CGO_CXXFLAGS=
+	build	CGO_LDFLAGS=
+	build	GOARCH=amd64
+	build	GOOS=linux
+	build	GOAMD64=v1
+	build	vcs=git
+	build	vcs.revision=99fa192ec4a2a717c89d181575f8c9799cd6ed56
+	build	vcs.time=2026-10-21T15:05:52Z
+	build	vcs.modified=true

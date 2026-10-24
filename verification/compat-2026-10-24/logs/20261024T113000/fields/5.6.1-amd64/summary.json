@@ -1,0 +1,433 @@
+{
+  "run_id": "20261024T113000",
+  "compose_version": "5.6.1",
+  "arch": "amd64",
+  "project": "ota-fields-561-obsolete",
+  "port": 18120,
+  "compose_binary": "/home/seeker32/projects/ota/.tmp/compat/bin/docker-compose-5.6.1-amd64",
+  "compose_binary_sha256": "47737f4236e6d3ccea7291995203f8f018058783b4c3a9469119811a0b5db8c0",
+  "started_at": "2026-10-24T03:23:56.614+00:00",
+  "finished_at": "2026-10-24T03:24:09.355+00:00",
+  "passed": true,
+  "checks_total": 16,
+  "checks_passed": 16,
+  "checks": [
+    {
+      "name": "compose version",
+      "expected": "5.6.1",
+      "actual": "5.6.1",
+      "ok": true
+    },
+    {
+      "name": "deploy config accepted",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "deploy up accepted",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "deploy inspect",
+      "expected": "2 values",
+      "actual": "2",
+      "ok": true
+    },
+    {
+      "name": "deploy down",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "--compatibility accepted",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "deploy compat inspect",
+      "expected": "2 values",
+      "actual": "2",
+      "ok": true
+    },
+    {
+      "name": "deploy compat down",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "default profile services",
+      "expected": "base",
+      "actual": "base",
+      "ok": true
+    },
+    {
+      "name": "debug profile services",
+      "expected": "base,extra",
+      "actual": "base,extra",
+      "ok": true
+    },
+    {
+      "name": "profile up",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "profile skips extra service",
+      "expected": "1 container",
+      "actual": "1",
+      "ok": true
+    },
+    {
+      "name": "profile down",
+      "expected": "0",
+      "actual": "0",
+      "ok": true
+    },
+    {
+      "name": "unknown field config --quiet rejected",
+      "expected": "1",
+      "actual": "1",
+      "ok": true
+    },
+    {
+      "name": "unknown field named in stderr",
+      "expected": "unknown_ota_field",
+      "actual": "present",
+      "ok": true
+    },
+    {
+      "name": "unknown field config rejected",
+      "expected": "1",
+      "actual": "1",
+      "ok": true
+    }
+  ],
+  "extra": {
+    "deploy_limits_default": [
+      "500000000",
+      "67108864"
+    ],
+    "deploy_limits_compatibility": [
+      "500000000",
+      "67108864"
+    ]
+  },
+  "commands": [
+    {
+      "step": "version",
+      "argv": [
+        "docker",
+        "compose",
+        "version",
+        "--short"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 69,
+      "log": "01-version.log"
+    },
+    {
+      "step": "deploy-config",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-fields-561-deploy",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-deploy.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project",
+        "config",
+        "--quiet"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 119,
+      "log": "02-deploy-config.log"
+    },
+    {
+      "step": "deploy-up",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-fields-561-deploy",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-deploy.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project",
+        "up",
+        "-d"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 443,
+      "log": "03-deploy-up.log"
+    },
+    {
+      "step": "deploy-id",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-fields-561-deploy",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-deploy.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project",
+        "ps",
+        "-q",
+        "limited"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 151,
+      "log": "04-deploy-id.log"
+    },
+    {
+      "step": "deploy-inspect",
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.HostConfig.NanoCpus}} {{.HostConfig.Memory}}",
+        "36538ab2ab5fbaa0d8d7e7c4b87016b3ce1d2611e9e4d186feaca54e29a71749"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 64,
+      "log": "05-deploy-inspect.log"
+    },
+    {
+      "step": "deploy-down",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-fields-561-deploy",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-deploy.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project",
+        "down"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 3690,
+      "log": "06-deploy-down.log"
+    },
+    {
+      "step": "deploy-compat-up",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-fields-561-deploy",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-deploy.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project",
+        "--compatibility",
+        "up",
+        "-d"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 450,
+      "log": "07-deploy-compat-up.log"
+    },
+    {
+      "step": "deploy-compat-id",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-fields-561-deploy",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-deploy.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project",
+        "ps",
+        "-q",
+        "limited"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 143,
+      "log": "08-deploy-compat-id.log"
+    },
+    {
+      "step": "deploy-compat-inspect",
+      "argv": [
+        "docker",
+        "inspect",
+        "--format",
+        "{{.HostConfig.NanoCpus}} {{.HostConfig.Memory}}",
+        "fbec3dfe884def6578f78867fe67f27865bdb5a9b1d0d090e26a82b9b0d33dfb"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 63,
+      "log": "09-deploy-compat-inspect.log"
+    },
+    {
+      "step": "deploy-compat-down",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-fields-561-deploy",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-deploy.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project",
+        "down"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 3592,
+      "log": "10-deploy-compat-down.log"
+    },
+    {
+      "step": "profile-services",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-fields-561-profile",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-profile.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project",
+        "config",
+        "--services"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 123,
+      "log": "11-profile-services.log"
+    },
+    {
+      "step": "profile-services-debug",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-fields-561-profile",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-profile.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project",
+        "--profile",
+        "debug",
+        "config",
+        "--services"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 118,
+      "log": "12-profile-services-debug.log"
+    },
+    {
+      "step": "profile-up",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-fields-561-profile",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-profile.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project",
+        "up",
+        "-d"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 452,
+      "log": "13-profile-up.log"
+    },
+    {
+      "step": "profile-ps",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-fields-561-profile",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-profile.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project",
+        "ps",
+        "--format",
+        "json"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 152,
+      "log": "14-profile-ps.log"
+    },
+    {
+      "step": "profile-down",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-fields-561-profile",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-profile.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project",
+        "down"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_ms": 3660,
+      "log": "15-profile-down.log"
+    },
+    {
+      "step": "obsolete-config",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-fields-561-obsolete",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-obsolete.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project",
+        "config",
+        "--quiet"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "duration_ms": 124,
+      "log": "16-obsolete-config.log"
+    },
+    {
+      "step": "obsolete-config-full",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "ota-fields-561-obsolete",
+        "-f",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-obsolete.yaml",
+        "--project-directory",
+        "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project",
+        "config"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "duration_ms": 120,
+      "log": "17-obsolete-config-full.log"
+    }
+  ]
+}

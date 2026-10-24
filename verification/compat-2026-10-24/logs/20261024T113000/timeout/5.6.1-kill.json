@@ -1,0 +1,125 @@
+{
+  "scenario": "compose-up-wait-timeout",
+  "mode": "kill",
+  "compose_version": "5.6.1",
+  "compose_config": "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/samples/compose-timeout.yaml",
+  "project": "ota-timeout-561-kill-20261024t113000",
+  "timeout_ms": 3000,
+  "timed_out": true,
+  "context_error": "context deadline exceeded",
+  "duration_ms": 3003,
+  "wait": {
+    "command": [
+      "docker",
+      "compose",
+      "-p",
+      "ota-timeout-561-kill-20261024t113000",
+      "-f",
+      "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/samples/compose-timeout.yaml",
+      "--project-directory",
+      "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/samples",
+      "up",
+      "-d",
+      "--wait",
+      "--wait-timeout",
+      "60"
+    ],
+    "exit_code": -1,
+    "duration_ms": 3003,
+    "err": "signal: killed",
+    "process_state": "signal: killed",
+    "stderr": " Network ota-timeout-561-kill-20261024t113000_default Creating \n Network ota-timeout-561-kill-20261024t113000_default Creating \n Network ota-timeout-561-kill-20261024t113000_default Created \n Network ota-timeout-561-kill-20261024t113000_default Created \n Container ota-timeout-561-kill-20261024t113000-slow-1 Creating \n Container ota-timeout-561-kill-20261024t113000-slow-1 Created \n Container ota-timeout-561-kill-20261024t113000-slow-1 Starting \n Container ota-timeout-561-kill-20261024t113000-slow-1 Started \n Container ota-timeout-561-kill-20261024t113000-slow-1 Waiting \n\n"
+  },
+  "state_after_ps_all": {
+    "command": [
+      "docker",
+      "compose",
+      "-p",
+      "ota-timeout-561-kill-20261024t113000",
+      "-f",
+      "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/samples/compose-timeout.yaml",
+      "--project-directory",
+      "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/samples",
+      "ps",
+      "--all",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "duration_ms": 151,
+    "process_state": "exit status 0",
+    "stdout": "{\"Command\":\"\\\"sh -c 'sleep 120'\\\"\",\"CreatedAt\":\"2026-10-24 11:24:24 +0800 CST\",\"Engine\":\"\",\"ExitCode\":0,\"Health\":\"starting\",\"ID\":\"3eb35fe4295a\",\"Image\":\"busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e\",\"Labels\":\"com.docker.compose.config-hash=d7f65d838e68a7a25a9ef21ffed386c405024aa52767cede8b690647f252816d,com.docker.compose.image=sha256:66a6306db78bf2dbf3487f293aa8d6990d8e506fdffab9cc43fe422becf886e4,com.docker.compose.project=ota-timeout-561-kill-20261024t113000,com.docker.compose.project.config_files=/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/samples/compose-timeout.yaml,com.docker.compose.project.working_dir=/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/samples,com.docker.compose.service=slow,com.docker.compose.version=5.6.1,com.docker.compose.container-number=1,com.docker.compose.depends_on=,com.docker.compose.oneoff=False,desktop.docker.io/ports.scheme=v2,desktop.docker.io/wsl-distro=Ubuntu-24.04\",\"LocalVolumes\":\"0\",\"Mounts\":\"\",\"Name\":\"ota-timeout-561-kill-20261024t113000-slow-1\",\"Names\":\"ota-timeout-561-kill-20261024t113000-slow-1\",\"Networks\":\"ota-timeout-561-kill-20261024t113000_default\",\"Ports\":\"\",\"Project\":\"ota-timeout-561-kill-20261024t113000\",\"Publishers\":[],\"RunningFor\":\"2 seconds ago\",\"Service\":\"slow\",\"Size\":\"0B\",\"State\":\"running\",\"Status\":\"Up 2 seconds (health: starting)\"}\n"
+  },
+  "state_after_ps": {
+    "command": [
+      "docker",
+      "compose",
+      "-p",
+      "ota-timeout-561-kill-20261024t113000",
+      "-f",
+      "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/samples/compose-timeout.yaml",
+      "--project-directory",
+      "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/samples",
+      "ps",
+      "--format",
+      "json"
+    ],
+    "exit_code": 0,
+    "duration_ms": 151,
+    "process_state": "exit status 0",
+    "stdout": "{\"Command\":\"\\\"sh -c 'sleep 120'\\\"\",\"CreatedAt\":\"2026-10-24 11:24:24 +0800 CST\",\"Engine\":\"\",\"ExitCode\":0,\"Health\":\"starting\",\"ID\":\"3eb35fe4295a\",\"Image\":\"busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e\",\"Labels\":\"com.docker.compose.project=ota-timeout-561-kill-20261024t113000,com.docker.compose.project.config_files=/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/samples/compose-timeout.yaml,com.docker.compose.service=slow,desktop.docker.io/ports.scheme=v2,desktop.docker.io/wsl-distro=Ubuntu-24.04,com.docker.compose.config-hash=d7f65d838e68a7a25a9ef21ffed386c405024aa52767cede8b690647f252816d,com.docker.compose.container-number=1,com.docker.compose.image=sha256:66a6306db78bf2dbf3487f293aa8d6990d8e506fdffab9cc43fe422becf886e4,com.docker.compose.oneoff=False,com.docker.compose.project.working_dir=/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/samples,com.docker.compose.version=5.6.1,com.docker.compose.depends_on=\",\"LocalVolumes\":\"0\",\"Mounts\":\"\",\"Name\":\"ota-timeout-561-kill-20261024t113000-slow-1\",\"Names\":\"ota-timeout-561-kill-20261024t113000-slow-1\",\"Networks\":\"ota-timeout-561-kill-20261024t113000_default\",\"Ports\":\"\",\"Project\":\"ota-timeout-561-kill-20261024t113000\",\"Publishers\":[],\"RunningFor\":\"3 seconds ago\",\"Service\":\"slow\",\"Size\":\"0B\",\"State\":\"running\",\"Status\":\"Up 2 seconds (health: starting)\"}\n"
+  },
+  "docker_ps_after": {
+    "command": [
+      "docker",
+      "ps",
+      "-a",
+      "--filter",
+      "label=com.docker.compose.project=ota-timeout-561-kill-20261024t113000",
+      "--format",
+      "{{.Names}}"
+    ],
+    "exit_code": 0,
+    "duration_ms": 75,
+    "process_state": "exit status 0",
+    "stdout": "ota-timeout-561-kill-20261024t113000-slow-1\n"
+  },
+  "container_found_after_timeout": true,
+  "container_names_after_timeout": [
+    "ota-timeout-561-kill-20261024t113000-slow-1"
+  ],
+  "cleanup_down": {
+    "command": [
+      "docker",
+      "compose",
+      "-p",
+      "ota-timeout-561-kill-20261024t113000",
+      "-f",
+      "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/samples/compose-timeout.yaml",
+      "--project-directory",
+      "/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/samples",
+      "down"
+    ],
+    "exit_code": 0,
+    "duration_ms": 3593,
+    "process_state": "exit status 0",
+    "stderr": " Container ota-timeout-561-kill-20261024t113000-slow-1 Stopping \n Container ota-timeout-561-kill-20261024t113000-slow-1 Stopped \n Container ota-timeout-561-kill-20261024t113000-slow-1 Removing \n Container ota-timeout-561-kill-20261024t113000-slow-1 Removed \n Network ota-timeout-561-kill-20261024t113000_default Removing \n Network ota-timeout-561-kill-20261024t113000_default Removed \n"
+  },
+  "cleanup_remaining": {
+    "command": [
+      "docker",
+      "ps",
+      "-a",
+      "--filter",
+      "label=com.docker.compose.project=ota-timeout-561-kill-20261024t113000",
+      "--format",
+      "{{.Names}}"
+    ],
+    "exit_code": 0,
+    "duration_ms": 65,
+    "process_state": "exit status 0"
+  },
+  "cleanup_verified": true,
+  "started_at": "2026-10-24T03:24:23.789266786Z",
+  "finished_at": "2026-10-24T03:24:30.829832645Z"
+}

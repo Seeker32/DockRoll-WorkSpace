@@ -1,0 +1,16 @@
+# step: exec-shared-volume
+# started_at: 2026-10-24T03:21:53.800+00:00
+# compose_version: 5.6.1
+# arch: amd64
+# project: ota-compat-561-amd64-20261024t113000
+# command: docker compose -p ota-compat-561-amd64-20261024t113000 -f /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.1-amd64/project/compose.yaml --project-directory /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.1-amd64/project exec -T worker cat /data/worker.log
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 182
+
+=== stdout ===
+worker-ok mode=normal
+
+=== stderr ===
+

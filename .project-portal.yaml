@@ -13,3 +13,9 @@ sources:
     kind: wiki
     area: project
     order: 1
+  - id: verification
+    label: Verification Artifacts
+    path: verification
+    kind: docs
+    area: evidence
+    order: 2

@@ -1,0 +1,57 @@
+# OTA compatibility sample: covers only the Compose subset planned for the agent.
+# Pull is pinned by digest; mutable state lives in a named volume and host bind mounts.
+x-ota-owner: Seeker32
+
+services:
+  web:
+    image: busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e
+    command:
+      - sh
+      - -c
+      - |
+        set -eu
+        echo "$$APP_VERSION" > /data/app-version
+        exec httpd -f -p 8080 -h /www
+    environment:
+      APP_VERSION: "${APP_VERSION:-1}"
+    ports:
+      - "127.0.0.1:${HOST_PORT:-18080}:8080"
+    volumes:
+      - data:/data
+      - type: bind
+        source: ./www
+        target: /www
+      - type: bind
+        source: ./config
+        target: /config
+        read_only: true
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/version"]
+      interval: 2s
+      timeout: 1s
+      retries: 10
+      start_period: 1s
+    restart: unless-stopped
+
+  worker:
+    image: busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e
+    command:
+      - sh
+      - -c
+      - |
+        set -eu
+        echo "worker-ok mode=$$WORKER_MODE" >> /data/worker.log
+        exec sleep 120
+    env_file:
+      - ./env/worker.env
+    environment:
+      WORKER_MODE: "normal"
+    volumes:
+      - data:/data
+    depends_on:
+      web:
+        condition: service_healthy
+    restart: "on-failure:2"
+
+volumes:
+  data:

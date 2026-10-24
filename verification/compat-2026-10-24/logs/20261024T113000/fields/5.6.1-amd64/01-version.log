@@ -1,0 +1,16 @@
+# step: version
+# started_at: 2026-10-24T03:23:56.614+00:00
+# compose_version: 5.6.1
+# arch: amd64
+# project: ota-compat-561-amd64-fields
+# command: docker compose version --short
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 69
+
+=== stdout ===
+5.6.1
+
+=== stderr ===
+

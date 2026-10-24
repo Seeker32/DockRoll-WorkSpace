@@ -1,0 +1,23 @@
+# step: deploy-compat-up
+# started_at: 2026-10-24T03:23:43.037+00:00
+# compose_version: 5.6.0
+# arch: amd64
+# project: ota-fields-560-deploy
+# command: docker compose -p ota-fields-560-deploy -f /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.0-amd64/project/compose-deploy.yaml --project-directory /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.0-amd64/project --compatibility up -d
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 452
+
+=== stdout ===
+
+
+=== stderr ===
+ Network ota-fields-560-deploy_default Creating 
+ Network ota-fields-560-deploy_default Creating 
+ Network ota-fields-560-deploy_default Created 
+ Network ota-fields-560-deploy_default Created 
+ Container ota-fields-560-deploy_limited_1 Creating 
+ Container ota-fields-560-deploy_limited_1 Created 
+ Container ota-fields-560-deploy_limited_1 Starting 
+ Container ota-fields-560-deploy_limited_1 Started 

@@ -1,0 +1,41 @@
+# compatibility summary: /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000
+
+## Compose command/config matrix
+
+| compose | arch | checks | result | failed checks |
+| --- | --- | --- | --- | --- |
+| 5.0.1 | amd64 | 41/41 | PASS | - |
+| 5.0.1 | arm64 | 41/41 | PASS | - |
+| 5.6.0 | amd64 | 41/41 | PASS | - |
+| 5.6.0 | arm64 | 41/41 | PASS | - |
+| 5.6.1 | amd64 | 41/41 | PASS | - |
+| 5.6.1 | arm64 | 41/41 | PASS | - |
+
+## Field / boundary probes
+
+| compose | checks | result | deploy limits default (NanoCpus, Memory) | deploy limits --compatibility | failed checks |
+| --- | --- | --- | --- | --- | --- |
+| 5.0.0 | 2/2 | PASS | - | - | - |
+| 5.0.1 | 16/16 | PASS | 500000000 67108864 | 500000000 67108864 | - |
+| 5.6.0 | 16/16 | PASS | 500000000 67108864 | 500000000 67108864 | - |
+| 5.6.1 | 16/16 | PASS | 500000000 67108864 | 500000000 67108864 | - |
+
+## os/exec timeout and cancellation
+
+| compose | mode | timed out | ctx error | wait exit | process state | containers after kill | cleanup verified |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 5.0.1 | interrupt | True | context deadline exceeded | 130 | exit status 130 | ['ota-timeout-501-interrupt-20261024t113000-slow-1'] | True |
+| 5.0.1 | kill | True | context deadline exceeded | -1 | signal: killed | ['ota-timeout-501-kill-20261024t113000-slow-1'] | True |
+| 5.6.1 | interrupt | True | context deadline exceeded | 130 | exit status 130 | ['ota-timeout-561-interrupt-20261024t113000-slow-1'] | True |
+| 5.6.1 | kill | True | context deadline exceeded | -1 | signal: killed | ['ota-timeout-561-kill-20261024t113000-slow-1'] | True |
+
+## Go SDK probe
+
+| toolchain | client module | negotiated API | server version | server API | min API | containers | result |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| go1.26.0 | github.com/moby/moby/client@v0.6.2 | 1.56 | 29.9.2 | 1.56 | 1.40 | 4 | PASS |
+| go1.27.3 | github.com/moby/moby/client@v0.6.2 | 1.56 | 29.9.2 | 1.56 | 1.40 | 4 | PASS |
+
+## Verdict
+
+PASS: all recorded checks passed

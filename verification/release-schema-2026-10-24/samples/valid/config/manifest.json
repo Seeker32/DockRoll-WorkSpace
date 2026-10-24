@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "release_id": "rel-20261024-config-003",
+  "app_id": "demo-config",
+  "release_type": "config",
+  "created_at": "2026-10-24T04:00:00Z",
+  "metadata": {
+    "app_version": "1.0.0",
+    "description": "Configuration reference release with hash, size, ownership and reload policy.",
+    "source_commit": "b184905"
+  },
+  "compatibility": {
+    "os": [
+      "linux"
+    ],
+    "arch": [
+      "amd64",
+      "arm64"
+    ],
+    "min_agent_version": "0.1.0",
+    "min_docker_version": "29.0.0",
+    "min_compose_version": "5.0.1"
+  },
+  "ownership": {
+    "owner": "ota-team",
+    "compose_project_name": "demo-config",
+    "labels": {
+      "io.dockroll.managed": "true",
+      "io.dockroll.app-id": "demo-config",
+      "io.dockroll.release-id": "rel-20261024-config-003",
+      "io.dockroll.owner": "ota-team"
+    }
+  },
+  "apply_policy": {
+    "strategy": "reload",
+    "reload": {
+      "command": [
+        "/usr/sbin/nginx",
+        "-s",
+        "reload"
+      ],
+      "timeout_seconds": 30
+    }
+  },
+  "health": {
+    "check": {
+      "type": "command",
+      "command": [
+        "/usr/bin/curl",
+        "-fsS",
+        "http://127.0.0.1:18082/healthz"
+      ]
+    },
+    "interval_seconds": 10,
+    "timeout_seconds": 3,
+    "retries": 3,
+    "startup_grace_seconds": 20,
+    "observation_window_seconds": 90,
+    "success_criteria": "all_services_healthy"
+  },
+  "rollback": {
+    "strategy": "previous_release",
+    "max_attempts": 1,
+    "failure_action": "escalate",
+    "preserve_volumes": true,
+    "restore_service_set": true,
+    "deadline_seconds": 180
+  },
+  "config": {
+    "files": [
+      {
+        "source": {
+          "path": "payload/app.conf",
+          "sha256": "6ba48a914ddb270444eaf0723ee33988fa455857c4ea0e759e169ca944e8d46e",
+          "size_bytes": 96
+        },
+        "target_path": "/etc/dockroll/apps/demo-config/app.conf",
+        "mode": "0640",
+        "uid": 0,
+        "gid": 0
+      }
+    ]
+  },
+  "signature": {
+    "algorithm": "ed25519",
+    "key_id": "test-fixture-ed25519-2026",
+    "signed_at": "2026-10-24T04:00:00Z",
+    "canonicalization": "RFC8785",
+    "signature": "3p6nkk1pn2lQaiixmhc6Wst1GgISdA59LfW1WhfRjgh7bwIhqqX1pcOVQdru5mdqyDE+S81IaQLEj67dBsNKBQ=="
+  }
+}

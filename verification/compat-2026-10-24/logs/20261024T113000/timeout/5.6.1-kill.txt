@@ -1,0 +1,4 @@
+scenario=compose-up-wait-timeout mode=kill compose=5.6.1
+timed_out=true ctx=context deadline exceeded wait_exit=-1 wait_err=signal: killed duration_ms=3003
+process_state="signal: killed" containers_after_timeout=true names=[ota-timeout-561-kill-20261024t113000-slow-1]
+docker_ps_exit=0 cleanup_down_exit=0 cleanup_verified=true remaining=""

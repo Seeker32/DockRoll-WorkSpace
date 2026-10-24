@@ -1,0 +1,33 @@
+# step: up
+# started_at: 2026-10-24T03:21:40.055+00:00
+# compose_version: 5.6.0
+# arch: amd64
+# project: ota-compat-560-amd64-20261024t113000
+# command: docker compose -p ota-compat-560-amd64-20261024t113000 -f /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project/compose.yaml --project-directory /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-amd64/project up -d
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 1748
+
+=== stdout ===
+
+
+=== stderr ===
+ Network ota-compat-560-amd64-20261024t113000_default Creating 
+ Network ota-compat-560-amd64-20261024t113000_default Creating 
+ Volume ota-compat-560-amd64-20261024t113000_data Creating 
+ Volume ota-compat-560-amd64-20261024t113000_data Creating 
+ Volume ota-compat-560-amd64-20261024t113000_data Created 
+ Volume ota-compat-560-amd64-20261024t113000_data Created 
+ Network ota-compat-560-amd64-20261024t113000_default Created 
+ Network ota-compat-560-amd64-20261024t113000_default Created 
+ Container ota-compat-560-amd64-20261024t113000-web-1 Creating 
+ Container ota-compat-560-amd64-20261024t113000-web-1 Created 
+ Container ota-compat-560-amd64-20261024t113000-worker-1 Creating 
+ Container ota-compat-560-amd64-20261024t113000-worker-1 Created 
+ Container ota-compat-560-amd64-20261024t113000-web-1 Starting 
+ Container ota-compat-560-amd64-20261024t113000-web-1 Started 
+ Container ota-compat-560-amd64-20261024t113000-web-1 Waiting 
+ Container ota-compat-560-amd64-20261024t113000-web-1 Healthy 
+ Container ota-compat-560-amd64-20261024t113000-worker-1 Starting 
+ Container ota-compat-560-amd64-20261024t113000-worker-1 Started 

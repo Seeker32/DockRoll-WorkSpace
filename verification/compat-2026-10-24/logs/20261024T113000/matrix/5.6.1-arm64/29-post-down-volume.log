@@ -1,0 +1,16 @@
+# step: post-down-volume
+# started_at: 2026-10-24T03:23:02.683+00:00
+# compose_version: 5.6.1
+# arch: arm64
+# project: ota-compat-561-arm64-20261024t113000
+# command: docker volume ls --filter name=ota-compat-561-arm64-20261024t113000_data --format '{{.Name}}'
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 61
+
+=== stdout ===
+ota-compat-561-arm64-20261024t113000_data
+
+=== stderr ===
+

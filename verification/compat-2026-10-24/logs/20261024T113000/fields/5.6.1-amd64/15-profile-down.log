@@ -1,0 +1,21 @@
+# step: profile-down
+# started_at: 2026-10-24T03:23:56.614+00:00
+# compose_version: 5.6.1
+# arch: amd64
+# project: ota-fields-561-profile
+# command: docker compose -p ota-fields-561-profile -f /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project/compose-profile.yaml --project-directory /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/fields/5.6.1-amd64/project down
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 3660
+
+=== stdout ===
+
+
+=== stderr ===
+ Container ota-fields-561-profile-base-1 Stopping 
+ Container ota-fields-561-profile-base-1 Stopped 
+ Container ota-fields-561-profile-base-1 Removing 
+ Container ota-fields-561-profile-base-1 Removed 
+ Network ota-fields-561-profile_default Removing 
+ Network ota-fields-561-profile_default Removed 

@@ -1,0 +1,18 @@
+# step: ps-plain
+# started_at: 2026-10-24T03:22:34.809+00:00
+# compose_version: 5.6.0
+# arch: arm64
+# project: ota-compat-560-arm64-20261024t113000
+# command: docker run --rm --platform linux/arm64 --label ota-compat.cli-run=20261024T113000 -v /var/run/docker.sock:/var/run/docker.sock -v /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-arm64/project:/home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-arm64/project -v /home/seeker32/projects/ota/.tmp/compat/bin/docker-compose-5.6.0-arm64:/usr/local/bin/docker-compose:ro -v /etc/ssl/certs:/etc/ssl/certs:ro -e HOST_PORT=18112 -e APP_VERSION=1 -w /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-arm64/project busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e /usr/local/bin/docker-compose -p ota-compat-560-arm64-20261024t113000 -f /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-arm64/project/compose.yaml --project-directory /home/seeker32/projects/ota/.wiki/evidence/compat-2026-10-24/logs/20261024T113000/matrix/5.6.0-arm64/project ps
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 1013
+
+=== stdout ===
+NAME                                            IMAGE                                                                             COMMAND                   SERVICE   CREATED         STATUS                   PORTS
+ota-compat-560-arm64-20261024t113000-web-1      busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e   "sh -c 'set -eu\necho…"   web       4 seconds ago   Up 3 seconds (healthy)   127.0.0.1:18112->8080/tcp
+ota-compat-560-arm64-20261024t113000-worker-1   busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e   "sh -c 'set -eu\necho…"   worker    4 seconds ago   Up 2 seconds             
+
+=== stderr ===
+

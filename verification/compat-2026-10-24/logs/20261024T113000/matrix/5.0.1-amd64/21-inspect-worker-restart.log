@@ -1,0 +1,16 @@
+# step: inspect-worker-restart
+# started_at: 2026-10-24T03:21:26.763+00:00
+# compose_version: 5.0.1
+# arch: amd64
+# project: ota-compat-501-amd64-20261024t113000
+# command: docker inspect --format '{{json .HostConfig.RestartPolicy}}' 9f2e5b5acad8ad5b31d891858ab121ccf9ce12cebb8a1fe8a9fc1095b73e3684
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 64
+
+=== stdout ===
+{"Name":"on-failure","MaximumRetryCount":2}
+
+=== stderr ===
+

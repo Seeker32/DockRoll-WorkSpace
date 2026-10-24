@@ -1,0 +1,129 @@
+# Release manifest schema v1.0 validation
+run_at=2026-10-24T12:47:29+08:00
+host=Linux 6.6.114.1-microsoft-standard-WSL2 x86_64
+python=Python 3.12.3
+jsonschema=4.10.3
+cryptography=41.0.7
+wiki_head=b1849055ecd0e1435d244568fde66e1a0b1493a8
+
+## JSON Schema self-check
+OK manifest.schema.json ($id=https://dockroll.dev/schemas/release-manifest/1.0)
+
+## Valid fixtures (schema + semantic rules + signature with test key)
+PASS samples/valid/compose/manifest.json
+  release_id=rel-20261024-compose-002 app_id=demo-compose release_type=compose schema_version=1.0
+  manifest_digest=sha256:f04c498cb587b9683c8157d48fb2934e163702de41b825a9b9c259db7d80d94f
+summary: 1 passed, 0 failed, 1 total
+EXPECTED PASS: samples/valid/compose/manifest.json -> OK
+
+PASS samples/valid/config/manifest.json
+  release_id=rel-20261024-config-003 app_id=demo-config release_type=config schema_version=1.0
+  manifest_digest=sha256:ff94a28e4d3174faf6ffef090722cedbbedb89b1d67264a9b37453821fe95adf
+summary: 1 passed, 0 failed, 1 total
+EXPECTED PASS: samples/valid/config/manifest.json -> OK
+
+PASS samples/valid/single-container/manifest.json
+  release_id=rel-20261024-single-001 app_id=demo-single release_type=single_container schema_version=1.0
+  manifest_digest=sha256:837b9f915721bde7ec567e17cb16c61c341d770f048fa99e5085ea3f489f2a38
+summary: 1 passed, 0 failed, 1 total
+EXPECTED PASS: samples/valid/single-container/manifest.json -> OK
+
+## Invalid fixtures (must be rejected with field path and reason)
+FAIL samples/invalid/missing-required-field/manifest.json
+  - $.health: missing required field 'health' [schema.required]
+summary: 0 passed, 1 failed, 1 total
+EXPECTED REJECT: samples/invalid/missing-required-field/manifest.json -> OK
+
+FAIL samples/invalid/image-tag-not-digest/manifest.json
+  - $.container.image.repository: image repository must not contain a tag; pin the image with digest [image.tag-forbidden]
+  - $.container.image.repository: 'docker.io/library/nginx:latest' does not match '^(?:[a-z0-9]+(?:[._-][a-z0-9]+)*(?::[0-9]+)?/)?(?:[a-z0-9]+(?:[._-][a-z0-9]+)*/)*[a-z0-9]+(?:[._-][a-z0-9]+)*$' [schema.pattern]
+summary: 0 passed, 1 failed, 1 total
+EXPECTED REJECT: samples/invalid/image-tag-not-digest/manifest.json -> OK
+
+FAIL samples/invalid/artifact-hash-mismatch/manifest.json
+  - $.config.files[0].source.sha256: sha256 mismatch: declared 0000000000000000000000000000000000000000000000000000000000000000, actual 6ba48a914ddb270444eaf0723ee33988fa455857c4ea0e759e169ca944e8d46e [artifact.hash-mismatch]
+summary: 0 passed, 1 failed, 1 total
+EXPECTED REJECT: samples/invalid/artifact-hash-mismatch/manifest.json -> OK
+
+FAIL samples/invalid/artifact-size-mismatch/manifest.json
+  - $.config.files[0].source.size_bytes: size mismatch: declared 97, actual 96 [artifact.size-mismatch]
+summary: 0 passed, 1 failed, 1 total
+EXPECTED REJECT: samples/invalid/artifact-size-mismatch/manifest.json -> OK
+
+FAIL samples/invalid/unknown-field/manifest.json
+  - $.unexpected_release_note: unknown field 'unexpected_release_note' is not allowed [schema.additionalProperties]
+summary: 0 passed, 1 failed, 1 total
+EXPECTED REJECT: samples/invalid/unknown-field/manifest.json -> OK
+
+FAIL samples/invalid/inline-secret/manifest.json
+  - $.secrets[0].value: unknown field 'value' is not allowed [schema.additionalProperties]
+  - $.secrets[0].value: inline secret value is forbidden; declare a controlled ref instead [secret.inline]
+summary: 0 passed, 1 failed, 1 total
+EXPECTED REJECT: samples/invalid/inline-secret/manifest.json -> OK
+
+FAIL samples/invalid/unsupported-schema-version/manifest.json
+  - $.schema_version: unsupported schema_version '1.1'; supported 1.0 (major must match and newer minor versions are rejected before field validation) [schema-version.unsupported]
+summary: 0 passed, 1 failed, 1 total
+EXPECTED REJECT: samples/invalid/unsupported-schema-version/manifest.json -> OK
+
+FAIL samples/invalid/project-name-mismatch/manifest.json
+  - $.ownership.compose_project_name: compose project name must equal app_id 'demo-compose' (fixed mapping); got 'demo-compose-alt' [identity.project-name-mismatch]
+summary: 0 passed, 1 failed, 1 total
+EXPECTED REJECT: samples/invalid/project-name-mismatch/manifest.json -> OK
+
+FAIL samples/invalid/secret-ref-unknown/manifest.json
+  - $.container.env[1].secret_ref: secret_ref 'DB_TOKEN' is not declared in secrets[] [secret.ref-unknown]
+summary: 0 passed, 1 failed, 1 total
+EXPECTED REJECT: samples/invalid/secret-ref-unknown/manifest.json -> OK
+
+FAIL samples/invalid/config-target-outside-root/manifest.json
+  - $.config.files[0].target_path: target_path must be a file under the managed app root '/etc/dockroll/apps/demo-config/' [config.target-outside-root]
+summary: 0 passed, 1 failed, 1 total
+EXPECTED REJECT: samples/invalid/config-target-outside-root/manifest.json -> OK
+
+FAIL samples/invalid/config-mode-world-writable/manifest.json
+  - $.config.files[0].mode: mode 0777 is world-writable; use 0640/0644 or stricter [config.mode-insecure]
+summary: 0 passed, 1 failed, 1 total
+EXPECTED REJECT: samples/invalid/config-mode-world-writable/manifest.json -> OK
+
+FAIL samples/invalid/compose-duplicate-service/manifest.json
+  - $.compose.services[2].name: duplicate compose service name 'api' [compose.service-duplicate]
+summary: 0 passed, 1 failed, 1 total
+EXPECTED REJECT: samples/invalid/compose-duplicate-service/manifest.json -> OK
+
+## Fixture hashes
+e7d57db4d530bb85b648f8925084b9d420ae5130f4f86a3bafe5420e8c8cdc90  ./manifest.schema.json
+2fa55f308f237592da39a8f3a6e00755d9cb610698508534f0a8b1c44b5a2994  ./requirements.txt
+8dfe6c8fc2e04e36e0023a7c690b68563a258503b0a5b7245057d05b02cf9971  ./run-validation.sh
+13fe38ae3059672cbf8233de67dffb2d251beb8d29959c40a150e8612bbd5057  ./samples/invalid/artifact-hash-mismatch/manifest.json
+6ba48a914ddb270444eaf0723ee33988fa455857c4ea0e759e169ca944e8d46e  ./samples/invalid/artifact-hash-mismatch/payload/app.conf
+741f4e53be60a1f686eb8ead4bbc1a43ff99af82586958282691140d3957df04  ./samples/invalid/artifact-size-mismatch/manifest.json
+6ba48a914ddb270444eaf0723ee33988fa455857c4ea0e759e169ca944e8d46e  ./samples/invalid/artifact-size-mismatch/payload/app.conf
+8fc3100cf46c43a69c8525e45aa9352c82dfe841f887111de9907328066265ea  ./samples/invalid/compose-duplicate-service/compose.yaml
+29277596acd1ab288bbb4c46ad09278456759eba96455151a35ee682dfe509ac  ./samples/invalid/compose-duplicate-service/manifest.json
+0010863d75af4293c90e3c9835075bd8624ee44e705f1fecb7252099c8cb85e0  ./samples/invalid/config-mode-world-writable/manifest.json
+6ba48a914ddb270444eaf0723ee33988fa455857c4ea0e759e169ca944e8d46e  ./samples/invalid/config-mode-world-writable/payload/app.conf
+cdc4febfcbc363eb55e07bcd9c76fb603f39d48f8064acccfcf3814babf7dd56  ./samples/invalid/config-target-outside-root/manifest.json
+6ba48a914ddb270444eaf0723ee33988fa455857c4ea0e759e169ca944e8d46e  ./samples/invalid/config-target-outside-root/payload/app.conf
+2a8e116f75c92ab4d458a9288946af781d3a90912912bb8b983612323e1383a4  ./samples/invalid/image-tag-not-digest/manifest.json
+932b05cf13c1bf561d08467e591adc97a06f19473767b5133c11a0a1ff24aaed  ./samples/invalid/inline-secret/manifest.json
+61461e707c18f9466d3c9b965128d09f3a7e04833f34fb5ecc7c2f435dbc1325  ./samples/invalid/missing-required-field/manifest.json
+8fc3100cf46c43a69c8525e45aa9352c82dfe841f887111de9907328066265ea  ./samples/invalid/project-name-mismatch/compose.yaml
+7366e7f8151f0d02ea7429ed96b0e4ecf407eb0c499d91e664feef5b9378690d  ./samples/invalid/project-name-mismatch/manifest.json
+dfb3554e6927b53cff56bb5ec4e77ca2bf12e4ca6e6482b993236be5e247c439  ./samples/invalid/secret-ref-unknown/manifest.json
+428ff6f5b1fda09419bfe7bc34aca338fffd3073a0ccfcd54c30401f14e605e5  ./samples/invalid/unknown-field/manifest.json
+46ac7e74e3a1cb6f218d5987bdc6918b4d49b4d56860a444221b5360a957f9eb  ./samples/invalid/unsupported-schema-version/manifest.json
+4ff05b6da7314a077250840362fdfff603104fa3609bcc43e1832c80b18eac98  ./samples/keys/test-ed25519-public.pem
+8fc3100cf46c43a69c8525e45aa9352c82dfe841f887111de9907328066265ea  ./samples/valid/compose/compose.yaml
+c4f47d87210d1cdf159fd4c4a5eb1be52596b9d6983788e47d9c51acfc0e7558  ./samples/valid/compose/manifest.json
+5bb2090e5b0cbef222c2560611630a85c78ac03e8a48235aa3f6074367afde0a  ./samples/valid/config/manifest.json
+6ba48a914ddb270444eaf0723ee33988fa455857c4ea0e759e169ca944e8d46e  ./samples/valid/config/payload/app.conf
+8d5274f6ff36b210fba69c4f19aab69463287c058ff46e626a3daad33a4816d8  ./samples/valid/single-container/manifest.json
+798579b71555cbef1f47a55571b433daf1a98ea74310cd1f78a444db8eb2ad46  ./validate_manifest.py
+
+## Test signing key
+key_id=test-fixture-ed25519-2026
+public_key_sha256=4ff05b6da7314a077250840362fdfff603104fa3609bcc43e1832c80b18eac98
+note=test fixture key only; it is not a trust root and must not be used for production releases
+
+RESULT: PASS (3 valid fixtures accepted, 12 invalid fixtures rejected)

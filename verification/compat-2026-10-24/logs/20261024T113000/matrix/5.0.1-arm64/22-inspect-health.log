@@ -1,0 +1,16 @@
+# step: inspect-health
+# started_at: 2026-10-24T03:22:07.340+00:00
+# compose_version: 5.0.1
+# arch: arm64
+# project: ota-compat-501-arm64-20261024t113000
+# command: docker inspect --format '{{json .State.Health}}' bebf31435ae7b423c4f2e4b37291e59a2b15efd3f1d17e502fab07e9fb4476f6
+# env: DOCKER_CONFIG=..., HOST_PORT=..., APP_VERSION=1
+# exit_code: 0
+# timed_out: False
+# duration_ms: 64
+
+=== stdout ===
+{"Status":"healthy","FailingStreak":0,"Log":[{"Start":"2026-10-24T03:22:17.760754076Z","End":"2026-10-24T03:22:17.783236327Z","ExitCode":0,"Output":""},{"Start":"2026-10-24T03:22:19.784415291Z","End":"2026-10-24T03:22:19.807302827Z","ExitCode":0,"Output":""},{"Start":"2026-10-24T03:22:21.808011014Z","End":"2026-10-24T03:22:21.829362531Z","ExitCode":0,"Output":""},{"Start":"2026-10-24T03:22:23.830562671Z","End":"2026-10-24T03:22:23.853452924Z","ExitCode":0,"Output":""},{"Start":"2026-10-24T03:22:25.854856535Z","End":"2026-10-24T03:22:25.876945981Z","ExitCode":0,"Output":""}]}
+
+=== stderr ===
+

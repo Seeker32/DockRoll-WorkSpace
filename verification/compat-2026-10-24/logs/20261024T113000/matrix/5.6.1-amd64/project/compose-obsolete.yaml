@@ -1,0 +1,10 @@
+# Parser-only sample: deliberately mixes an obsolete top-level field and an unknown
+# service field to record whether each Compose release warns, ignores, or rejects it.
+version: "3.9"
+x-ota-note: "extension fields must be tolerated"
+
+services:
+  sample:
+    image: busybox@sha256:bdf57e528e45e4433820e045b29b4597825a1c9e38353532d90a01445013f82e
+    command: ["sh", "-c", "sleep 30"]
+    unknown_ota_field: true

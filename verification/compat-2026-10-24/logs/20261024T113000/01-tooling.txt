@@ -1,0 +1,51 @@
+== downloaded tooling ==
+downloaded_at: 2026-10-24T11:11:40+08:00
+bin_dir: /home/seeker32/projects/ota/.tmp/compat/bin
+go: 1.27.3
+sha256:
+  5091bac5729ce968c602d157c2f0b959b7b367d4efb70aa864eb9ae78eebe13e  docker-compose-5.0.0-amd64
+  cdc1df64412ed009312afbc044b3625144d06c07736e2f7a77fb0460531b9327  docker-compose-5.0.1-amd64
+  40343e21ca777173e69cff5dbafeb37c6f81f3b0d57d9e597f036e95eb63e76a  docker-compose-5.6.0-amd64
+  47737f4236e6d3ccea7291995203f8f018058783b4c3a9469119811a0b5db8c0  docker-compose-5.6.1-amd64
+  e3b36491a75f92c35ebfbbe6e4741bd2429664edf3971427983d67c0b21e7d1d  docker-compose-5.0.1-arm64
+  733ec76717ceb59052a9609b9dadfb523b2df8eab57a54212872d10a58078ea2  docker-compose-5.6.0-arm64
+  42cfa75f51ad0ccf290bad37899e0038a8c10a0069e85233ecc1d53e3ff1347d  docker-compose-5.6.1-arm64
+go archive sha256: 65efbc80fdc1fa2cd2631cad5b481777a68e8725f34e89f50fc6ac714e379b40
+
+== script and sample hashes ==
+f28134dce13f139c7e3dc45986699af4ca8ccaad581c3a2b7d03bfc6b3f97b99  samples/compose-deploy.yaml
+86b10f589c09ad5d0ddee4697e687eb7704fdbd95210b0fa0cd171b2bc0059a5  samples/compose-obsolete.yaml
+14832ea3dbe3ab079351f9a524cc6d76266f9ebbf47c722f2afcce9dcbbae7d5  samples/compose-profile.yaml
+7ffb2787ba4602a366b10d7d772bc59d1e1de26ad1ab04f07da69dabcd244833  samples/compose-timeout.yaml
+b04d01474e1e717ee23a77eb0f172b4be4e38f4797372c4a3fac9f4fdccae15a  samples/compose.yaml
+d978285b8864c9d537d552445f658607ea1ef7b1511829006745e2c2b0eff0ab  samples/config/app.conf
+2303d25c467efad2c37f549c4d28d8bb59264409c84fba65fad07d0e8c25e0fd  samples/env/worker.env
+2deed60896dc6e33ed678cdad1a0293d83881f272d704b39af50800324f41478  samples/www/version
+be519a44a747beab6653d0e1e33839e7c7058e3c2637d757470d9e4dfcda49bb  scripts/download-tooling.sh
+468489bcf5c3dea76eff6a18238f9c61e35e10bba87185796ec2acffb267d8d0  scripts/probe-timeout/go.mod
+59bd4b8dc0d3f9cf337a8787e65023e305d047207c1836584c4030446b41bc8f  scripts/probe-timeout/main.go
+a0608dc1fb58495b0a2bff99da2b6235fb3c8b716296bf1dd25efb692a416598  scripts/run-all.sh
+d9e692132397abddf6ecff321fc04f1a7cb10a5ef62f4a0aa8c60508dac8af6c  scripts/run_fields.py
+b76aab6a2c8a3447e6ce611b37b6c1bf78bb738133ed4469faefb6537ca16119  scripts/run_matrix.py
+8c9040e2f0ae5a93d69a74993c8461f8d49e50b378c841d7f4c08e160c8de0ee  scripts/sdk-probe/go.mod
+712a2f690e367f1aa552582792b4c0a5a4debb4e475764fb4dffaa59cc64a8e7  scripts/sdk-probe/go.sum
+7cb78d62edd7a7223f689fb3ba28d236ea8e2fb1ce46dd1af5778d1cd77ff4e8  scripts/sdk-probe/main.go
+0b73ef1e5959a3e261462031fef48efae974fb9ce97f58061318eeefe648e0e2  scripts/summarize.py
+
+== compose binary versions (amd64) ==
+5.0.0
+5.0.1
+5.6.0
+5.6.1
+
+== arm64 binary file types ==
+/home/seeker32/projects/ota/.tmp/compat/bin/docker-compose-5.0.1-arm64: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, BuildID[sha1]=68d6a3898ad03d1405cc97fb3956bd3068ab21fc, not stripped
+/home/seeker32/projects/ota/.tmp/compat/bin/docker-compose-5.6.0-arm64: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, Go BuildID=o_rrUhWWhDrl0I_yaJOO/POlKz7txNjv7WrOHMb7Q/4D67mCew9JlzLUbUIrxb/cR1zgqVgI6UzCquPwftl, BuildID[sha1]=5ff7f36e8d984d90c8c1ca3f826eadfb804e333a, not stripped
+/home/seeker32/projects/ota/.tmp/compat/bin/docker-compose-5.6.1-arm64: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, Go BuildID=m_C2T4uv8VijAB0Ss5vh/28UIGZX_3RaDv2o0_vJE/y-x0JpdKfy_OmypKCITq/rQ6oP2X_7JKPjZxTGhN8, BuildID[sha1]=3cd3c883f4df91306b2c71ea4d8b3ae716283016, not stripped
+
+== installed plugin ==
+47737f4236e6d3ccea7291995203f8f018058783b4c3a9469119811a0b5db8c0  /mnt/wsl/docker-desktop/cli-tools/usr/local/lib/docker/cli-plugins/docker-compose
+
+== Go toolchain ==
+go version go1.27.3 linux/amd64
+65efbc80fdc1fa2cd2631cad5b481777a68e8725f34e89f50fc6ac714e379b40  /home/seeker32/projects/ota/.tmp/compat/tooling/go1.27.3.linux-amd64.tar.gz
