@@ -1,11 +1,11 @@
 {
-  "schema_version": "1.0",
-  "release_id": "rel-20261024-single-001",
-  "app_id": "demo-single",
-  "release_type": "single_container",
-  "created_at": "2026-10-24T04:00:00Z",
+  "schemaVersion": "1.0",
+  "releaseId": "rel-20261024-single-001",
+  "appId": "demo-single",
+  "releaseType": "single_container",
+  "createdAt": "2026-10-24T04:00:00Z",
   "metadata": {
-    "app_version": "1.0.0",
+    "appVersion": "1.0.0",
     "description": "Single-container reference release for the M0 manifest contract."
   },
   "compatibility": {
@@ -16,13 +16,13 @@
       "amd64",
       "arm64"
     ],
-    "min_agent_version": "0.1.0",
-    "min_docker_version": "29.0.0",
-    "min_compose_version": "5.0.1"
+    "minAgentVersion": "0.1.0",
+    "minDockerVersion": "29.0.0",
+    "minComposeVersion": "5.0.1"
   },
   "ownership": {
     "owner": "ota-team",
-    "compose_project_name": "demo-single",
+    "composeProjectName": "demo-single",
     "labels": {
       "io.dockroll.managed": "true",
       "io.dockroll.app-id": "demo-single",
@@ -30,7 +30,7 @@
       "io.dockroll.owner": "ota-team"
     }
   },
-  "apply_policy": {
+  "applyPolicy": {
     "strategy": "restart_container"
   },
   "health": {
@@ -39,22 +39,22 @@
       "path": "/healthz",
       "port": 80,
       "scheme": "http",
-      "expected_status": 200
+      "expectedStatus": 200
     },
-    "interval_seconds": 10,
-    "timeout_seconds": 3,
+    "intervalSeconds": 10,
+    "timeoutSeconds": 3,
     "retries": 3,
-    "startup_grace_seconds": 20,
-    "observation_window_seconds": 90,
-    "success_criteria": "all_services_healthy"
+    "startupGraceSeconds": 20,
+    "observationWindowSeconds": 90,
+    "successCriteria": "all_services_healthy"
   },
   "rollback": {
     "strategy": "previous_release",
-    "max_attempts": 1,
-    "failure_action": "escalate",
-    "preserve_volumes": true,
-    "restore_service_set": true,
-    "deadline_seconds": 180
+    "maxAttempts": 1,
+    "failureAction": "escalate",
+    "preserveVolumes": true,
+    "restoreServiceSet": true,
+    "deadlineSeconds": 180
   },
   "container": {
     "image": {
@@ -73,14 +73,14 @@
       },
       {
         "name": "DB_PASSWORD",
-        "secret_ref": "DB_TOKEN"
+        "secretRef": "DB_TOKEN"
       }
     ],
     "ports": [
       {
-        "host_ip": "127.0.0.1",
-        "host_port": 18080,
-        "container_port": 80,
+        "hostIp": "127.0.0.1",
+        "hostPort": 18080,
+        "containerPort": 80,
         "protocol": "tcp"
       }
     ],
@@ -89,21 +89,21 @@
         "type": "bind",
         "source": "/srv/demo-single/config",
         "target": "/etc/nginx/conf.d",
-        "read_only": true
+        "readOnly": true
       }
     ],
     "network": {
       "mode": "bridge"
     },
-    "restart_policy": {
+    "restartPolicy": {
       "name": "unless-stopped"
     },
     "resources": {
-      "cpu_millicores": 500,
-      "memory_bytes": 268435456,
-      "pids_limit": 128
+      "cpuMillicores": 500,
+      "memoryBytes": 268435456,
+      "pidsLimit": 128
     },
-    "stop_grace_period_seconds": 30
+    "stopGracePeriodSeconds": 30
   },
   "secrets": [
     {
@@ -114,12 +114,12 @@
   ],
   "signature": {
     "algorithm": "ed25519",
-    "key_id": "test-fixture-ed25519-2026",
-    "signed_at": "2026-10-24T04:00:00Z",
+    "keyId": "test-fixture-ed25519-2026",
+    "signedAt": "2026-10-24T04:00:00Z",
     "canonicalization": "RFC8785",
-    "signature": "mtZQjhFcf8+qZ59RxWazCAB6V5xwiO0E9LmebkWnO/cCXp1phCGQJv/tm6gTb6DlaiZZeitVLKyDSSZ43eiwBg=="
+    "signature": "XN77w6ISOJj8iKw0U8Mclu1mqtRGA1JJHmaKoXlbQucf3hWEJ7PKKxgav+ftzwFUGepxpkp/rPnaXLuSIuCdDg=="
   },
-  "shared_resources": [
+  "sharedResources": [
     {
       "kind": "bind_path",
       "name": "demo-single-config",

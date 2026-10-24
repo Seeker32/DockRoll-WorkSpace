@@ -1,30 +1,30 @@
 # Release manifest schema v1.0 validation
-run_at=2026-10-24T18:12:40+08:00
+run_at=2026-10-24T18:34:55+08:00
 host=Linux 6.6.114.1-microsoft-standard-WSL2 x86_64
 python=Python 3.12.3
 jsonschema=4.10.3
 cryptography=41.0.7
-workspace_head=7373ba1e8a56fd8af6f6a56db716443592c0ac27
+workspace_head=ea2fb18180e3e6cf82c108a6e48577f8c6f05c3a
 
 ## JSON Schema self-check
 OK manifest.schema.json ($id=https://dockroll.dev/schemas/release-manifest/1.0)
 
 ## Valid fixtures (schema + semantic rules + signature with test key)
 PASS samples/valid/compose/manifest.json
-  release_id=rel-20261024-compose-002 app_id=demo-compose release_type=compose schema_version=1.0
-  manifest_digest=sha256:ee10b6ef4f709540386255493ff1a70d992ebe3cc17076f9455ebb2aca8fc486
+  releaseId=rel-20261024-compose-002 appId=demo-compose releaseType=compose schemaVersion=1.0
+  manifest_digest=sha256:dd9d3e8a7d825fc7fbec2ae0b614d578761ff3f338af861eca5e9fca81565b27
 summary: 1 passed, 0 failed, 1 total
 EXPECTED PASS: samples/valid/compose/manifest.json -> OK
 
 PASS samples/valid/config/manifest.json
-  release_id=rel-20261024-config-003 app_id=demo-config release_type=config schema_version=1.0
-  manifest_digest=sha256:355c82e6ed58749d8e681cbd1e646dd6de5e6c440833db014767dcbf40b80bd0
+  releaseId=rel-20261024-config-003 appId=demo-config releaseType=config schemaVersion=1.0
+  manifest_digest=sha256:8833f75cf71a34c636cda1db8dbf933ed472bb28a8c867252031e1463bbdda6f
 summary: 1 passed, 0 failed, 1 total
 EXPECTED PASS: samples/valid/config/manifest.json -> OK
 
 PASS samples/valid/single-container/manifest.json
-  release_id=rel-20261024-single-001 app_id=demo-single release_type=single_container schema_version=1.0
-  manifest_digest=sha256:6e87082557334f0bdf97e633f923f7a9898feeb000cd69af617e4ed154902860
+  releaseId=rel-20261024-single-001 appId=demo-single releaseType=single_container schemaVersion=1.0
+  manifest_digest=sha256:67c1555d9033888ad3bb0dc131d0d8645295c8ad50a14358652a5916ab17f794
 summary: 1 passed, 0 failed, 1 total
 EXPECTED PASS: samples/valid/single-container/manifest.json -> OK
 
@@ -46,7 +46,7 @@ summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/artifact-hash-mismatch/manifest.json -> OK
 
 FAIL samples/invalid/artifact-size-mismatch/manifest.json
-  - $.config.files[0].source.size_bytes: size mismatch: declared 97, actual 96 [artifact.size-mismatch]
+  - $.config.files[0].source.sizeBytes: size mismatch: declared 97, actual 96 [artifact.size-mismatch]
 summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/artifact-size-mismatch/manifest.json -> OK
 
@@ -62,22 +62,22 @@ summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/inline-secret/manifest.json -> OK
 
 FAIL samples/invalid/unsupported-schema-version/manifest.json
-  - $.schema_version: unsupported schema_version '1.1'; supported 1.0 (major must match and newer minor versions are rejected before field validation) [schema-version.unsupported]
+  - $.schemaVersion: unsupported schemaVersion '1.1'; supported 1.0 (major must match and newer minor versions are rejected before field validation) [schema-version.unsupported]
 summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/unsupported-schema-version/manifest.json -> OK
 
 FAIL samples/invalid/project-name-mismatch/manifest.json
-  - $.ownership.compose_project_name: compose project name must equal app_id 'demo-compose' (fixed mapping); got 'demo-compose-alt' [identity.project-name-mismatch]
+  - $.ownership.composeProjectName: compose project name must equal appId 'demo-compose' (fixed mapping); got 'demo-compose-alt' [identity.project-name-mismatch]
 summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/project-name-mismatch/manifest.json -> OK
 
 FAIL samples/invalid/secret-ref-unknown/manifest.json
-  - $.container.env[1].secret_ref: secret_ref 'DB_TOKEN' is not declared in secrets[] [secret.ref-unknown]
+  - $.container.env[1].secretRef: secretRef 'DB_TOKEN' is not declared in secrets[] [secret.ref-unknown]
 summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/secret-ref-unknown/manifest.json -> OK
 
 FAIL samples/invalid/config-target-outside-root/manifest.json
-  - $.config.files[0].target_path: target_path must be a file under the managed app root '/etc/dockroll/apps/demo-config/' [config.target-outside-root]
+  - $.config.files[0].targetPath: targetPath must be a file under the managed app root '/etc/dockroll/apps/demo-config/' [config.target-outside-root]
 summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/config-target-outside-root/manifest.json -> OK
 
@@ -97,17 +97,17 @@ summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/secret-ref-unmanaged/manifest.json -> OK
 
 FAIL samples/invalid/bind-path-relative/manifest.json
-  - $.shared_resources[0].path: 'srv/shared' does not match '^/[A-Za-z0-9._/-]+$' [schema.pattern]
+  - $.sharedResources[0].path: 'srv/shared' does not match '^/[A-Za-z0-9._/-]+$' [schema.pattern]
 summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/bind-path-relative/manifest.json -> OK
 
 FAIL samples/invalid/invalid-timestamp/manifest.json
-  - $.created_at: created_at is not a valid UTC timestamp (expected YYYY-MM-DDTHH:MM:SSZ) [timestamp.invalid]
+  - $.createdAt: createdAt is not a valid UTC timestamp (expected YYYY-MM-DDTHH:MM:SSZ) [timestamp.invalid]
 summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/invalid-timestamp/manifest.json -> OK
 
 FAIL samples/invalid/timestamp-order/manifest.json
-  - $.signature.signed_at: signed_at must not be earlier than created_at [timestamp.order]
+  - $.signature.signedAt: signedAt must not be earlier than createdAt [timestamp.order]
 summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/timestamp-order/manifest.json -> OK
 
@@ -123,7 +123,7 @@ summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/host-network-ports/manifest.json -> OK
 
 FAIL samples/invalid/restart-on-failure-no-retries/manifest.json
-  - $.container.restart_policy.max_retries: missing required field 'max_retries' [schema.required]
+  - $.container.restartPolicy.maxRetries: missing required field 'maxRetries' [schema.required]
 summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/restart-on-failure-no-retries/manifest.json -> OK
 
@@ -133,7 +133,7 @@ summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/platform-arch-mismatch/manifest.json -> OK
 
 FAIL samples/invalid/health-timeout-exceeds-interval/manifest.json
-  - $.health.timeout_seconds: timeout_seconds (30) must be less than interval_seconds (10) [health.timeout-vs-interval]
+  - $.health.timeoutSeconds: timeoutSeconds (30) must be less than intervalSeconds (10) [health.timeout-vs-interval]
 summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/health-timeout-exceeds-interval/manifest.json -> OK
 
@@ -154,13 +154,13 @@ summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/bind-mount-docker-sock/manifest.json -> OK
 
 FAIL samples/invalid/bind-mount-outside-allowlist/manifest.json
-  - $.container.mounts[0].source: bind mount source is outside the allowlist (/etc/dockroll/apps/<app_id>/, /var/lib/dockroll/apps/<app_id>/, /srv/<app_id>/, /opt/<app_id>/) [mount.source-not-allowed]
+  - $.container.mounts[0].source: bind mount source is outside the allowlist (/etc/dockroll/apps/<appId>/, /var/lib/dockroll/apps/<appId>/, /srv/<appId>/, /opt/<appId>/) [mount.source-not-allowed]
   - $.container.mounts[0].source: '/etc/nginx' does not match '^/(?:etc/dockroll/apps|var/lib/dockroll/apps|srv|opt)(?:/[A-Za-z0-9][A-Za-z0-9._-]*)+$' [schema.pattern]
 summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/bind-mount-outside-allowlist/manifest.json -> OK
 
 FAIL samples/invalid/bind-mount-writable-config/manifest.json
-  - $.container.mounts[0].read_only: configuration bind mounts under /etc/dockroll/apps/<app_id>/ must be read_only [mount.read-only-required]
+  - $.container.mounts[0].readOnly: configuration bind mounts under /etc/dockroll/apps/<appId>/ must be readOnly [mount.read-only-required]
 summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: samples/invalid/bind-mount-writable-config/manifest.json -> OK
 
@@ -171,58 +171,58 @@ EXPECTED REJECT: samples/invalid/bind-mount-other-app/manifest.json -> OK
 
 ## Manifest size guard (pre-parse 1 MiB limit)
 FAIL output/.tmp-too-large-manifest.json
-  - $: manifest is 1050744 bytes; limit is 1048576 bytes [manifest.too-large]
+  - $: manifest is 1050700 bytes; limit is 1048576 bytes [manifest.too-large]
 summary: 0 passed, 1 failed, 1 total
 EXPECTED REJECT: oversized manifest -> OK
 
 ## Fixture hashes
-2a1faa04c66ecd2ffdc20b797900f9a8c800ca839f2ecd5123594f9d404b406b  ./manifest.schema.json
+5228eef6561de7fdd4a9bbbe615fcc32d2d8756334c35f3da6d636d1eb6e9afb  ./manifest.schema.json
 2fa55f308f237592da39a8f3a6e00755d9cb610698508534f0a8b1c44b5a2994  ./requirements.txt
-3af77d288d991e24b088e92f0e32885c8a25f2e9a51cdb277750022343fb8783  ./run-validation.sh
-d0090fb412a8bd73ecf2992ddc7c8e2e33a1530f23aa6fa4504787996508c702  ./samples/invalid/artifact-hash-mismatch/manifest.json
+d1d21625bd77e09eef57c36af43c92a93c810b24c1624f4b43303f37969ce2b4  ./run-validation.sh
+1d61b574475bce21d1680e5840fc44072470c007663c0a16c344e3b6a7a1116b  ./samples/invalid/artifact-hash-mismatch/manifest.json
 6ba48a914ddb270444eaf0723ee33988fa455857c4ea0e759e169ca944e8d46e  ./samples/invalid/artifact-hash-mismatch/payload/app.conf
-48929448f07bc4ccc5a68ba069f541cfed66e76ce63f118fe01a703649e15f4c  ./samples/invalid/artifact-size-mismatch/manifest.json
+aabce22249d6ee63734005507409318cca3e73251b325d292fb478e3f87f6fb5  ./samples/invalid/artifact-size-mismatch/manifest.json
 6ba48a914ddb270444eaf0723ee33988fa455857c4ea0e759e169ca944e8d46e  ./samples/invalid/artifact-size-mismatch/payload/app.conf
-c76764ccf0507124af1b4e72f4a270bc569ab25016960e59c46c977399df65b9  ./samples/invalid/bind-mount-docker-sock/manifest.json
-06700971c60295ae2bda41d8e6f0f3d1daf3d32a51d260af7646c1e6b02d1532  ./samples/invalid/bind-mount-other-app/manifest.json
-8881ffdecb81e1f4eaad2a97d77b223f37a57d4f7632dfdc93516bac19d8d305  ./samples/invalid/bind-mount-outside-allowlist/manifest.json
-384de70448a2083a10ee9c87178e5b6e24c9967fc7d7b39f4362d11ee3473368  ./samples/invalid/bind-mount-writable-config/manifest.json
-2fa0d8d863ac0bf2541f45d34eb51c98b843903b34b0711392fbcfe25fcac612  ./samples/invalid/bind-path-relative/manifest.json
+98274979dc35b936175fb2a170e668c0098a0e4c65f3d762dd0e189ba73b165a  ./samples/invalid/bind-mount-docker-sock/manifest.json
+3aafe298310cc30d084a5a3e738b33522cdbcffe68dc6217acbb26d875979fba  ./samples/invalid/bind-mount-other-app/manifest.json
+1797796b5e32f452d3faf40ee1c2fdb8ba86a7c0d688e5d638e908785889c6e2  ./samples/invalid/bind-mount-outside-allowlist/manifest.json
+888bfa9fa5b5d6dd99051e2f5a370b48dc6243cd3c7d410b2324ea4694631244  ./samples/invalid/bind-mount-writable-config/manifest.json
+92431e4ce2ac40cd8b49946f3b332d26edd8bd47c83cc00e8e0c7a4d307a1833  ./samples/invalid/bind-path-relative/manifest.json
 8fc3100cf46c43a69c8525e45aa9352c82dfe841f887111de9907328066265ea  ./samples/invalid/compose-duplicate-service/compose.yaml
-ec702e617bd777d5800e7e793bf45ec64ab2f8ca319fe26c4383a8d84e9583e1  ./samples/invalid/compose-duplicate-service/manifest.json
-04114cba7402eeaf61164f869ff97721481f7dc87ed0f2a311c5644bdadf85bc  ./samples/invalid/config-mode-world-writable/manifest.json
+bf29a9bd4e1b7489bcd00e69791a4a374b7fe0b4876342fdc53c39bf6f8c88b2  ./samples/invalid/compose-duplicate-service/manifest.json
+9ad9772cb5214dbae1c8e9e86d70f3fd9ce1af88a884b420c121eb2474f6c382  ./samples/invalid/config-mode-world-writable/manifest.json
 6ba48a914ddb270444eaf0723ee33988fa455857c4ea0e759e169ca944e8d46e  ./samples/invalid/config-mode-world-writable/payload/app.conf
-e18729bc486f7560519a3792af185907cc30db607942f2d2d6924aeae5a9393d  ./samples/invalid/config-target-outside-root/manifest.json
+dfcaae96b99dc5f9de4b26d7e090f7b220cc04fdfe165901329ffb82a9779dc3  ./samples/invalid/config-target-outside-root/manifest.json
 6ba48a914ddb270444eaf0723ee33988fa455857c4ea0e759e169ca944e8d46e  ./samples/invalid/config-target-outside-root/payload/app.conf
-4c60a552a52ae8efb352ee0b631e91c05b98053fecb01644766398ff1f1bb894  ./samples/invalid/duplicate-env-name/manifest.json
-7e7e8ecef11ffeed6a235d5c5b71ede29d0b103a19de7d47adfdd2f14cb7f6ff  ./samples/invalid/health-timeout-exceeds-interval/manifest.json
-19c0d435065709a03bdf5cee99105256479ffd7eea8677880a3e4441dc91516c  ./samples/invalid/host-network-ports/manifest.json
-ddecd39e01a48cf3d3e81df46fa71244f71b1f0b627f22a6cda0c01184efec49  ./samples/invalid/image-tag-not-digest/manifest.json
-474cbabab04a2c08a26cab60c9a40a854d02a93667f04a4085251e464223d1e2  ./samples/invalid/inline-secret/manifest.json
-6f0098f762f92a9a00e290400f52ae7bf16450e4b89c3b442bb31e9f08c7e110  ./samples/invalid/invalid-timestamp/manifest.json
-e4edeb9725bfc632afa382dc181ab1a6128f9ace2eece1c67feeaf2570deed32  ./samples/invalid/label-key-invalid/manifest.json
-6854586bdf1031812840d9619654133ad8c0d6cf3e6aedc24fd0f118d9db5a61  ./samples/invalid/missing-required-field/manifest.json
-8f31960e307091c2efb3050c8c7aa99509fe37f84fb60c44a8c92c413af419d2  ./samples/invalid/platform-arch-mismatch/manifest.json
+a235a0622d7f4ca197b9173f3e39aae5564f2f7c01d0f4bcf14a479344ec3e75  ./samples/invalid/duplicate-env-name/manifest.json
+55e44a00f1904a6534bdc1b04692e10eebc4659646cb1c1cca52f64175e431cc  ./samples/invalid/health-timeout-exceeds-interval/manifest.json
+8cce9997a611a11ef9598e71ddcd44282891a470829098fb49ba3267d43e2b88  ./samples/invalid/host-network-ports/manifest.json
+3ce283711a03467971ec0841c1a8fe92d98991f1b763431aa88ef6e1132afcd8  ./samples/invalid/image-tag-not-digest/manifest.json
+04ca37b43122fcf2f378ec356916a0ae722ea3849b5a7b2d5e19e09fafb5f702  ./samples/invalid/inline-secret/manifest.json
+632cedc5570a0415c1bd6853360bc5dc2b1e764d6846edee579a9265869ef61e  ./samples/invalid/invalid-timestamp/manifest.json
+3570939e3e31f9afd7aaf31dd413f2fbbacb86204e029a23fb07696e8aea911b  ./samples/invalid/label-key-invalid/manifest.json
+cdf4afc51168b1d046d35e49ebe0d4a4bb6a3c952b2b8ac5782698ef5fe11fae  ./samples/invalid/missing-required-field/manifest.json
+cf581a9661a48ef93ccef750a5df0e6811dc8ce31fce730602696f4d063c8f2b  ./samples/invalid/platform-arch-mismatch/manifest.json
 8fc3100cf46c43a69c8525e45aa9352c82dfe841f887111de9907328066265ea  ./samples/invalid/project-name-mismatch/compose.yaml
-8dfa0d259f81cb271509d6c50cb5fe63ada9a7cd71f845c0aeb3da9d2a59f89e  ./samples/invalid/project-name-mismatch/manifest.json
-4840dcaa2d58e88c6e79984e01662fc2873583190d76f2b3fba1414545605807  ./samples/invalid/restart-on-failure-no-retries/manifest.json
-7978d8d86011cde5e8ac927924ec2374bdeac0a683130b634bc0c9ed28415a7d  ./samples/invalid/secret-ref-unknown/manifest.json
-71df6cc9ed3c167b72ac755deead9a3995f8a34c013a409a2c5cbbc84c3cb2c6  ./samples/invalid/secret-ref-unmanaged/manifest.json
-30ff196de4d04cb414fa72ecb297c1ad23939038e6bc409a5addc408f8c0b31b  ./samples/invalid/timestamp-order/manifest.json
-ff6d7adefcc1e643efeebfc55af16584e6033f845907a5a6fd8262914e575008  ./samples/invalid/too-many-secrets/manifest.json
-36bad6ea81c15fa734f436ccb2a4dec779429c1af508265be65506a062d9769a  ./samples/invalid/unknown-field/manifest.json
-6e9572604335b2fd864ff3294cdaab47afa13771ae18a2b1cdbf5afc4fb60cc4  ./samples/invalid/unsupported-schema-version/manifest.json
-306bc09d86abc8abbd48dcf266748427c7f2b562a63c876fd734a72a024b0a0c  ./samples/keys/test-ed25519-public.pem
+0f569462ad069dc493109ce9160d0066793e391dcb1bab5a56882977832d6a3d  ./samples/invalid/project-name-mismatch/manifest.json
+371729997fe44f565bdc9d66c9d2fa925977e4c52bede2f86bcf08a27ab4a25d  ./samples/invalid/restart-on-failure-no-retries/manifest.json
+00c846e4c593a9dcdfab308ed1ce97e56470dd320ede948ac50d366b8731d489  ./samples/invalid/secret-ref-unknown/manifest.json
+4b6e54d14a393bf929a35c8fa80aad6b19065fb3689d64f3889b2a311576912a  ./samples/invalid/secret-ref-unmanaged/manifest.json
+c293736849c1cdf7260fbc64da44c81350088e2dbb14ee18e532448e57f3174b  ./samples/invalid/timestamp-order/manifest.json
+e22a2d7a7647ea683155fbc7fda0408345c8b7ad5800a658ee00a86d39cf0083  ./samples/invalid/too-many-secrets/manifest.json
+41fd7805f252a64abccb36a0ed77b2f0a0c1c427afd5307bcbf8ade804f94732  ./samples/invalid/unknown-field/manifest.json
+dd209e43b2bf8afc9696f512d1179da6d136e602995ce629da7177f057dd31ee  ./samples/invalid/unsupported-schema-version/manifest.json
+f41990e46fca5dafde88d8c7ebd80749fde75c841659f35cc14221c8fdceba69  ./samples/keys/test-ed25519-public.pem
 8fc3100cf46c43a69c8525e45aa9352c82dfe841f887111de9907328066265ea  ./samples/valid/compose/compose.yaml
-b10c9b8b41c4f423e03e3d381c2041eb0568fd5679931b368fd2288c666854bd  ./samples/valid/compose/manifest.json
-f840d5caaeac407ad2cb0a49392d50647074db4fc74d91f6745f615f3a85cbdb  ./samples/valid/config/manifest.json
+734badd9f50f2c22ac44ef9e47e3d6c86448e5b715052384806c0d70d3b197c9  ./samples/valid/compose/manifest.json
+f8ef0a130ddab4c486cb51a4ec63483cfaf10d36e3b36d3a5860d76127e54e52  ./samples/valid/config/manifest.json
 6ba48a914ddb270444eaf0723ee33988fa455857c4ea0e759e169ca944e8d46e  ./samples/valid/config/payload/app.conf
-baf96c57a772f2725d6e64571e3bb81515fe2818d419c54e5e24b6f6ed467016  ./samples/valid/single-container/manifest.json
-dc9792ce22a5dcabf6077896bc0cc1ac939a3b24afbb669e3071aa7ddf253ce1  ./validate_manifest.py
+802c3a69e18278869e71aa6d7cf7ed5a82dbbd72c9d4e86a43c000f3855887a9  ./samples/valid/single-container/manifest.json
+e83df66a98d47c2e4c8ab26000be025d0d3c741d5e60d3e4637baa3a987b8ba2  ./validate_manifest.py
 
 ## Test signing key
-key_id=test-fixture-ed25519-2026
-public_key_sha256=306bc09d86abc8abbd48dcf266748427c7f2b562a63c876fd734a72a024b0a0c
+keyId=test-fixture-ed25519-2026
+public_key_sha256=f41990e46fca5dafde88d8c7ebd80749fde75c841659f35cc14221c8fdceba69
 note=test fixture key only; it is not a trust root and must not be used for production releases
 
 RESULT: PASS (3 valid fixtures accepted, 27 invalid fixtures rejected, oversized manifest rejected)

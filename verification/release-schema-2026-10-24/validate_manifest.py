@@ -6,7 +6,7 @@ Two layers are applied:
 1. JSON Schema (Draft 2020-12) for structure, required fields, enums and
    unknown-field rejection.
 2. Semantic rules that JSON Schema cannot express: digest pinning, artifact
-   hash/size, controlled secret references, app_id/project-name mapping,
+   hash/size, controlled secret references, appId/project-name mapping,
    managed config root, takeover/service-set rules and signature verification.
 
 Errors are always reported as ``<field path>: <reason>`` so logs can point at
@@ -76,10 +76,10 @@ class ValidationResult:
     manifest: str
     ok: bool
     errors: list[ValidationIssue] = field(default_factory=list)
-    release_id: str | None = None
-    app_id: str | None = None
-    release_type: str | None = None
-    schema_version: str | None = None
+    releaseId: str | None = None
+    appId: str | None = None
+    releaseType: str | None = None
+    schemaVersion: str | None = None
     manifest_digest: str | None = None
 
 
@@ -159,7 +159,7 @@ def json_schema_issues(error: jsonschema.ValidationError) -> list[ValidationIssu
         return [
             ValidationIssue(
                 path,
-                "value does not match exactly one allowed variant (check release_type payload and nested statements)",
+                "value does not match exactly one allowed variant (check releaseType payload and nested statements)",
                 f"schema.{error.validator}",
             )
         ]
@@ -211,7 +211,7 @@ def _canonical_json(value: Any, current: str = "$") -> str:
 def canonical_bytes(manifest: dict[str, Any]) -> bytes:
     """Canonical JSON for signing: RFC 8785 subset without signature.signature.
 
-    The signature envelope (algorithm, key_id, signed_at, canonicalization) is
+    The signature envelope (algorithm, keyId, signedAt, canonicalization) is
     signed; only the signature value itself is excluded. Keys are sorted by
     UTF-16 code units and only objects, arrays, strings, integers, booleans and
     null are accepted, so the result is byte-stable across implementations.
@@ -267,7 +267,7 @@ def prescan_issues(manifest: dict[str, Any]) -> list[ValidationIssue]:
                     issues.append(
                         ValidationIssue(
                             f"$.container.env[{index}].value",
-                            f"environment variable '{name}' looks secret; use secret_ref instead of an inline value",
+                            f"environment variable '{name}' looks secret; use secretRef instead of an inline value",
                             "secret.inline",
                         )
                     )
@@ -293,7 +293,7 @@ def prescan_issues(manifest: dict[str, Any]) -> list[ValidationIssue]:
                     ValidationIssue(
                         f"$.container.mounts[{index}].source",
                         "bind mount source is outside the allowlist "
-                        "(/etc/dockroll/apps/<app_id>/, /var/lib/dockroll/apps/<app_id>/, /srv/<app_id>/, /opt/<app_id>/)",
+                        "(/etc/dockroll/apps/<appId>/, /var/lib/dockroll/apps/<appId>/, /srv/<appId>/, /opt/<appId>/)",
                         "mount.source-not-allowed",
                     )
                 )
@@ -351,7 +351,7 @@ def parse_semver(value: str) -> tuple[int, int, int] | None:
 
 
 def artifact_issues(
-    manifest: dict[str, Any], manifest_dir: Path, release_type: str
+    manifest: dict[str, Any], manifest_dir: Path, releaseType: str
 ) -> list[ValidationIssue]:
     issues: list[ValidationIssue] = []
 
@@ -360,11 +360,11 @@ def artifact_issues(
     if isinstance(compose, dict):
         if isinstance(compose.get("file"), dict):
             artifacts.append(("$.compose.file", compose["file"]))
-        env_files = compose.get("env_files")
-        if isinstance(env_files, list):
-            for index, artifact in enumerate(env_files):
+        envFiles = compose.get("envFiles")
+        if isinstance(envFiles, list):
+            for index, artifact in enumerate(envFiles):
                 if isinstance(artifact, dict):
-                    artifacts.append((f"$.compose.env_files[{index}]", artifact))
+                    artifacts.append((f"$.compose.envFiles[{index}]", artifact))
     config = manifest.get("config")
     if isinstance(config, dict) and isinstance(config.get("files"), list):
         for index, entry in enumerate(config["files"]):
@@ -375,7 +375,7 @@ def artifact_issues(
     for path, artifact in artifacts:
         raw_path = artifact.get("path")
         expected_sha = artifact.get("sha256")
-        expected_size = artifact.get("size_bytes")
+        expected_size = artifact.get("sizeBytes")
         if not isinstance(raw_path, str) or not isinstance(expected_sha, str) or not isinstance(
             expected_size, int
         ):
@@ -425,7 +425,7 @@ def artifact_issues(
         if actual_size != expected_size:
             issues.append(
                 ValidationIssue(
-                    f"{path}.size_bytes",
+                    f"{path}.sizeBytes",
                     f"size mismatch: declared {expected_size}, actual {actual_size}",
                     "artifact.size-mismatch",
                 )
@@ -445,9 +445,9 @@ def artifact_issues(
                 )
             )
 
-    # release_type is already cross-checked by the schema; this guards an
+    # releaseType is already cross-checked by the schema; this guards an
     # invalid document that reached semantic validation through future changes.
-    if release_type == "compose" and not isinstance(compose, dict):
+    if releaseType == "compose" and not isinstance(compose, dict):
         issues.append(
             ValidationIssue("$.compose", "compose release requires a compose block", "payload.missing")
         )
@@ -468,56 +468,56 @@ def semantic_issues(
             seen.add(key)
             issues.append(ValidationIssue(path, reason, rule))
 
-    schema_version = manifest.get("schema_version")
-    if isinstance(schema_version, str) and schema_version not in SUPPORTED_SCHEMA_VERSIONS:
+    schemaVersion = manifest.get("schemaVersion")
+    if isinstance(schemaVersion, str) and schemaVersion not in SUPPORTED_SCHEMA_VERSIONS:
         add(
-            "$.schema_version",
-            f"unsupported schema_version '{schema_version}'; supported {', '.join(SUPPORTED_SCHEMA_VERSIONS)} "
+            "$.schemaVersion",
+            f"unsupported schemaVersion '{schemaVersion}'; supported {', '.join(SUPPORTED_SCHEMA_VERSIONS)} "
             "(major must match and newer minor versions are rejected before field validation)",
             "schema-version.unsupported",
         )
 
-    created_at = manifest.get("created_at")
-    signed_at = manifest.get("signature", {}).get("signed_at") if isinstance(manifest.get("signature"), dict) else None
-    created_dt = parse_timestamp(created_at) if isinstance(created_at, str) else None
-    signed_dt = parse_timestamp(signed_at) if isinstance(signed_at, str) else None
-    if isinstance(created_at, str) and created_dt is None:
+    createdAt = manifest.get("createdAt")
+    signedAt = manifest.get("signature", {}).get("signedAt") if isinstance(manifest.get("signature"), dict) else None
+    created_dt = parse_timestamp(createdAt) if isinstance(createdAt, str) else None
+    signed_dt = parse_timestamp(signedAt) if isinstance(signedAt, str) else None
+    if isinstance(createdAt, str) and created_dt is None:
         add(
-            "$.created_at",
-            "created_at is not a valid UTC timestamp (expected YYYY-MM-DDTHH:MM:SSZ)",
+            "$.createdAt",
+            "createdAt is not a valid UTC timestamp (expected YYYY-MM-DDTHH:MM:SSZ)",
             "timestamp.invalid",
         )
-    if isinstance(signed_at, str) and signed_dt is None:
+    if isinstance(signedAt, str) and signed_dt is None:
         add(
-            "$.signature.signed_at",
-            "signed_at is not a valid UTC timestamp (expected YYYY-MM-DDTHH:MM:SSZ)",
+            "$.signature.signedAt",
+            "signedAt is not a valid UTC timestamp (expected YYYY-MM-DDTHH:MM:SSZ)",
             "timestamp.invalid",
         )
     if created_dt is not None and signed_dt is not None and signed_dt < created_dt:
         add(
-            "$.signature.signed_at",
-            "signed_at must not be earlier than created_at",
+            "$.signature.signedAt",
+            "signedAt must not be earlier than createdAt",
             "timestamp.order",
         )
 
-    app_id = manifest.get("app_id")
-    release_id = manifest.get("release_id")
-    release_type = manifest.get("release_type")
+    appId = manifest.get("appId")
+    releaseId = manifest.get("releaseId")
+    releaseType = manifest.get("releaseType")
     ownership = manifest.get("ownership") if isinstance(manifest.get("ownership"), dict) else {}
 
-    project_name = ownership.get("compose_project_name")
-    if isinstance(app_id, str) and isinstance(project_name, str) and project_name != app_id:
+    projectName = ownership.get("composeProjectName")
+    if isinstance(appId, str) and isinstance(projectName, str) and projectName != appId:
         add(
-            "$.ownership.compose_project_name",
-            f"compose project name must equal app_id '{app_id}' (fixed mapping); got '{project_name}'",
+            "$.ownership.composeProjectName",
+            f"compose project name must equal appId '{appId}' (fixed mapping); got '{projectName}'",
             "identity.project-name-mismatch",
         )
 
     labels = ownership.get("labels") if isinstance(ownership.get("labels"), dict) else {}
     expected_labels = {
         "io.dockroll.managed": "true",
-        "io.dockroll.app-id": app_id,
-        "io.dockroll.release-id": release_id,
+        "io.dockroll.app-id": appId,
+        "io.dockroll.release-id": releaseId,
     }
     for label, expected in expected_labels.items():
         actual = labels.get(label)
@@ -529,13 +529,13 @@ def semantic_issues(
             )
 
     compatibility = manifest.get("compatibility") if isinstance(manifest.get("compatibility"), dict) else {}
-    min_compose = compatibility.get("min_compose_version")
+    min_compose = compatibility.get("minComposeVersion")
     if isinstance(min_compose, str):
         parsed = parse_semver(min_compose)
         if parsed is not None and parsed < MIN_COMPOSE_VERSION:
             add(
-                "$.compatibility.min_compose_version",
-                f"min_compose_version {min_compose} is below the supported floor "
+                "$.compatibility.minComposeVersion",
+                f"minComposeVersion {min_compose} is below the supported floor "
                 f"{'.'.join(map(str, MIN_COMPOSE_VERSION))}",
                 "compatibility.compose-floor",
             )
@@ -603,17 +603,17 @@ def semantic_issues(
                         "env.duplicate-name",
                     )
                 env_names.add(env_name)
-            secret_ref = entry.get("secret_ref")
-            if isinstance(secret_ref, str) and secret_ref not in declared_secrets:
+            secretRef = entry.get("secretRef")
+            if isinstance(secretRef, str) and secretRef not in declared_secrets:
                 add(
-                    f"$.container.env[{index}].secret_ref",
-                    f"secret_ref '{secret_ref}' is not declared in secrets[]",
+                    f"$.container.env[{index}].secretRef",
+                    f"secretRef '{secretRef}' is not declared in secrets[]",
                     "secret.ref-unknown",
                 )
 
     # Compose service set.
     compose = manifest.get("compose") if isinstance(manifest.get("compose"), dict) else {}
-    service_names: list[str] = []
+    serviceNames: list[str] = []
     services = compose.get("services")
     if isinstance(services, list):
         for index, service in enumerate(services):
@@ -621,14 +621,14 @@ def semantic_issues(
                 continue
             name = service.get("name")
             if isinstance(name, str):
-                if name in service_names:
+                if name in serviceNames:
                     add(
                         f"$.compose.services[{index}].name",
                         f"duplicate compose service name '{name}'",
                         "compose.service-duplicate",
                     )
-                service_names.append(name)
-        if release_type == "compose" and not service_names:
+                serviceNames.append(name)
+        if releaseType == "compose" and not serviceNames:
             add("$.compose.services", "compose release must declare at least one managed service", "compose.services-empty")
 
     arch_values = compatibility.get("arch") if isinstance(compatibility.get("arch"), list) else []
@@ -661,18 +661,18 @@ def semantic_issues(
         for index, port in enumerate(ports):
             if not isinstance(port, dict):
                 continue
-            host_ip = port.get("host_ip", "127.0.0.1")
-            host_port = port.get("host_port")
+            hostIp = port.get("hostIp", "127.0.0.1")
+            hostPort = port.get("hostPort")
             protocol = port.get("protocol")
-            if not isinstance(host_ip, str) or not isinstance(host_port, int) or not isinstance(
+            if not isinstance(hostIp, str) or not isinstance(hostPort, int) or not isinstance(
                 protocol, str
             ):
                 continue
-            key = (host_ip, host_port, protocol)
+            key = (hostIp, hostPort, protocol)
             if key in seen_ports:
                 add(
-                    f"$.container.ports[{index}].host_port",
-                    f"duplicate host binding {host_ip}:{host_port}/{protocol}",
+                    f"$.container.ports[{index}].hostPort",
+                    f"duplicate host binding {hostIp}:{hostPort}/{protocol}",
                     "port.duplicate",
                 )
             seen_ports.add(key)
@@ -714,32 +714,32 @@ def semantic_issues(
             app_segment: str | None = None
             if source.startswith("/etc/dockroll/apps/"):
                 app_segment = parts[4] if len(parts) > 4 else None
-                if isinstance(app_id, str) and app_segment != app_id:
+                if isinstance(appId, str) and app_segment != appId:
                     add(
                         f"$.container.mounts[{index}].source",
-                        f"bind source must be under the managed app root for '{app_id}'",
+                        f"bind source must be under the managed app root for '{appId}'",
                         "mount.app-id-mismatch",
                     )
-                if mount.get("read_only") is not True:
+                if mount.get("readOnly") is not True:
                     add(
-                        f"$.container.mounts[{index}].read_only",
-                        "configuration bind mounts under /etc/dockroll/apps/<app_id>/ must be read_only",
+                        f"$.container.mounts[{index}].readOnly",
+                        "configuration bind mounts under /etc/dockroll/apps/<appId>/ must be readOnly",
                         "mount.read-only-required",
                     )
             elif source.startswith("/var/lib/dockroll/apps/"):
                 app_segment = parts[5] if len(parts) > 5 else None
-                if isinstance(app_id, str) and app_segment != app_id:
+                if isinstance(appId, str) and app_segment != appId:
                     add(
                         f"$.container.mounts[{index}].source",
-                        f"bind source must be under the managed app root for '{app_id}'",
+                        f"bind source must be under the managed app root for '{appId}'",
                         "mount.app-id-mismatch",
                     )
             elif source.startswith(("/srv/", "/opt/")):
                 app_segment = parts[2] if len(parts) > 2 else None
-                if isinstance(app_id, str) and app_segment != app_id:
+                if isinstance(appId, str) and app_segment != appId:
                     add(
                         f"$.container.mounts[{index}].source",
-                        f"bind source must be under the app-specific root for '{app_id}'",
+                        f"bind source must be under the app-specific root for '{appId}'",
                         "mount.app-id-mismatch",
                     )
             else:
@@ -751,36 +751,36 @@ def semantic_issues(
 
     # Managed configuration paths.
     config = manifest.get("config") if isinstance(manifest.get("config"), dict) else {}
-    config_files = config.get("files")
-    target_paths: set[str] = set()
-    if isinstance(config_files, list):
-        root = f"{CONFIG_ROOT_PREFIX}{app_id}/" if isinstance(app_id, str) else CONFIG_ROOT_PREFIX
-        for index, entry in enumerate(config_files):
+    configFiles = config.get("files")
+    targetPaths: set[str] = set()
+    if isinstance(configFiles, list):
+        root = f"{CONFIG_ROOT_PREFIX}{appId}/" if isinstance(appId, str) else CONFIG_ROOT_PREFIX
+        for index, entry in enumerate(configFiles):
             if not isinstance(entry, dict):
                 continue
-            target = entry.get("target_path")
+            target = entry.get("targetPath")
             mode = entry.get("mode")
             if isinstance(target, str):
                 normalized = posixpath.normpath(target)
                 if normalized != target or ".." in Path(target).parts:
                     add(
-                        f"$.config.files[{index}].target_path",
-                        "target_path must be normalized and must not contain '..'",
+                        f"$.config.files[{index}].targetPath",
+                        "targetPath must be normalized and must not contain '..'",
                         "config.target-not-normalized",
                     )
                 elif not target.startswith(root) or target == root:
                     add(
-                        f"$.config.files[{index}].target_path",
-                        f"target_path must be a file under the managed app root '{root}'",
+                        f"$.config.files[{index}].targetPath",
+                        f"targetPath must be a file under the managed app root '{root}'",
                         "config.target-outside-root",
                     )
-                if target in target_paths:
+                if target in targetPaths:
                     add(
-                        f"$.config.files[{index}].target_path",
-                        f"duplicate target_path '{target}'",
+                        f"$.config.files[{index}].targetPath",
+                        f"duplicate targetPath '{target}'",
                         "config.target-duplicate",
                     )
-                target_paths.add(target)
+                targetPaths.add(target)
             if isinstance(mode, str) and re.match(r"^0[0-7]{3}$", mode):
                 if int(mode, 8) & 0o002:
                     add(
@@ -790,17 +790,17 @@ def semantic_issues(
                     )
 
     # Takeover and shared-resource protection.
-    shared_resources = manifest.get("shared_resources")
+    sharedResources = manifest.get("sharedResources")
     shared_names: set[str] = set()
-    if isinstance(shared_resources, list):
-        for index, resource in enumerate(shared_resources):
+    if isinstance(sharedResources, list):
+        for index, resource in enumerate(sharedResources):
             if not isinstance(resource, dict):
                 continue
             name = resource.get("name")
             if isinstance(name, str):
                 if name in shared_names:
                     add(
-                        f"$.shared_resources[{index}].name",
+                        f"$.sharedResources[{index}].name",
                         f"duplicate shared resource '{name}'",
                         "resource.duplicate",
                     )
@@ -811,7 +811,7 @@ def semantic_issues(
                     normalized = posixpath.normpath(path)
                     if normalized != path or ".." in Path(path).parts or path == "/":
                         add(
-                            f"$.shared_resources[{index}].path",
+                            f"$.sharedResources[{index}].path",
                             "bind_path path must be a normalized absolute host path, not '/' and not containing '..'",
                             "resource.bind-path-invalid",
                         )
@@ -819,29 +819,29 @@ def semantic_issues(
     takeover = manifest.get("takeover") if isinstance(manifest.get("takeover"), dict) else {}
     takeover_mode = takeover.get("mode", "none")
     if takeover_mode != "none":
-        if release_type != "compose":
+        if releaseType != "compose":
             add(
                 "$.takeover.mode",
                 "takeover is only supported for compose releases",
                 "takeover.release-type",
             )
-        existing_project = takeover.get("existing_project_name")
-        if isinstance(existing_project, str) and isinstance(app_id, str) and existing_project != app_id:
+        existing_project = takeover.get("existingProjectName")
+        if isinstance(existing_project, str) and isinstance(appId, str) and existing_project != appId:
             add(
-                "$.takeover.existing_project_name",
-                f"existing project name must equal app_id '{app_id}'; rename the existing stack "
+                "$.takeover.existingProjectName",
+                f"existing project name must equal appId '{appId}'; rename the existing stack "
                 "in a separate authorized operation before adoption",
                 "takeover.project-name-mismatch",
             )
         # Existing services may be absent from the target set: that is an
         # explicit service removal, and rollback restores the previous set.
-        preserve = takeover.get("preserve_shared_resources")
+        preserve = takeover.get("preserveSharedResources")
         if isinstance(preserve, list):
             for index, name in enumerate(preserve):
                 if isinstance(name, str) and name not in shared_names:
                     add(
-                        f"$.takeover.preserve_shared_resources[{index}]",
-                        f"shared resource '{name}' is not declared in shared_resources[]",
+                        f"$.takeover.preserveSharedResources[{index}]",
+                        f"shared resource '{name}' is not declared in sharedResources[]",
                         "takeover.shared-resource-unknown",
                     )
 
@@ -850,8 +850,8 @@ def semantic_issues(
     check = health.get("check") if isinstance(health.get("check"), dict) else {}
     check_service = check.get("service")
     if isinstance(check_service, str):
-        if release_type == "compose":
-            if check_service not in service_names:
+        if releaseType == "compose":
+            if check_service not in serviceNames:
                 add(
                     "$.health.check.service",
                     f"health check service '{check_service}' is not in compose.services[]",
@@ -864,62 +864,62 @@ def semantic_issues(
                 "health.service-forbidden",
             )
     elif (
-        release_type == "compose"
-        and health.get("success_criteria") == "primary_service_healthy"
-        and len(service_names) > 1
+        releaseType == "compose"
+        and health.get("successCriteria") == "primary_service_healthy"
+        and len(serviceNames) > 1
     ):
         add(
             "$.health.check.service",
-            "success_criteria 'primary_service_healthy' requires an explicit check.service",
+            "successCriteria 'primary_service_healthy' requires an explicit check.service",
             "health.primary-service-missing",
         )
 
-    interval = health.get("interval_seconds")
-    timeout = health.get("timeout_seconds")
+    interval = health.get("intervalSeconds")
+    timeout = health.get("timeoutSeconds")
     if isinstance(interval, int) and isinstance(timeout, int) and timeout >= interval:
         add(
-            "$.health.timeout_seconds",
-            f"timeout_seconds ({timeout}) must be less than interval_seconds ({interval})",
+            "$.health.timeoutSeconds",
+            f"timeoutSeconds ({timeout}) must be less than intervalSeconds ({interval})",
             "health.timeout-vs-interval",
         )
 
     # Reload targeting.
-    apply_policy = manifest.get("apply_policy") if isinstance(manifest.get("apply_policy"), dict) else {}
-    reload_block = apply_policy.get("reload") if isinstance(apply_policy.get("reload"), dict) else {}
+    applyPolicy = manifest.get("applyPolicy") if isinstance(manifest.get("applyPolicy"), dict) else {}
+    reload_block = applyPolicy.get("reload") if isinstance(applyPolicy.get("reload"), dict) else {}
     reload_service = reload_block.get("service")
     if isinstance(reload_service, str):
-        if release_type == "compose":
-            if reload_service not in service_names:
+        if releaseType == "compose":
+            if reload_service not in serviceNames:
                 add(
-                    "$.apply_policy.reload.service",
+                    "$.applyPolicy.reload.service",
                     f"reload service '{reload_service}' is not in compose.services[]",
                     "apply.reload-service-unknown",
                 )
         else:
             add(
-                "$.apply_policy.reload.service",
-                "apply_policy.reload.service is only valid for compose releases",
+                "$.applyPolicy.reload.service",
+                "applyPolicy.reload.service is only valid for compose releases",
                 "apply.reload-service-forbidden",
             )
 
     # Rollback target.
     rollback = manifest.get("rollback") if isinstance(manifest.get("rollback"), dict) else {}
-    target_release = rollback.get("target_release_id")
+    target_release = rollback.get("targetReleaseId")
     if (
         rollback.get("strategy") == "explicit_release"
         and isinstance(target_release, str)
-        and isinstance(release_id, str)
-        and target_release == release_id
+        and isinstance(releaseId, str)
+        and target_release == releaseId
     ):
         add(
-            "$.rollback.target_release_id",
+            "$.rollback.targetReleaseId",
             "rollback target must differ from the release being installed",
             "rollback.self-target",
         )
 
     # Artifact presence, size and hash.
-    if isinstance(release_type, str):
-        issues.extend(artifact_issues(manifest, manifest_dir, release_type))
+    if isinstance(releaseType, str):
+        issues.extend(artifact_issues(manifest, manifest_dir, releaseType))
 
     # Signature verification is opt-in: trust roots are defined by the
     # recovery/security design, not by this schema.
@@ -1042,30 +1042,30 @@ def validate_manifest(
     # Reject unsupported versions before any field validation: a future minor
     # manifest may contain fields this parser does not know, and reporting them
     # as unknown fields would hide the real incompatibility.
-    schema_version = manifest.get("schema_version")
+    schemaVersion = manifest.get("schemaVersion")
     if (
-        isinstance(schema_version, str)
-        and re.match(r"^[0-9]+\.[0-9]+$", schema_version)
-        and schema_version not in SUPPORTED_SCHEMA_VERSIONS
+        isinstance(schemaVersion, str)
+        and re.match(r"^[0-9]+\.[0-9]+$", schemaVersion)
+        and schemaVersion not in SUPPORTED_SCHEMA_VERSIONS
     ):
         return ValidationResult(
             manifest=str(manifest_path),
             ok=False,
             errors=[
                 ValidationIssue(
-                    "$.schema_version",
-                    f"unsupported schema_version '{schema_version}'; supported "
+                    "$.schemaVersion",
+                    f"unsupported schemaVersion '{schemaVersion}'; supported "
                     f"{', '.join(SUPPORTED_SCHEMA_VERSIONS)} (major must match and newer "
                     "minor versions are rejected before field validation)",
                     "schema-version.unsupported",
                 )
             ],
-            release_id=manifest.get("release_id") if isinstance(manifest.get("release_id"), str) else None,
-            app_id=manifest.get("app_id") if isinstance(manifest.get("app_id"), str) else None,
-            release_type=manifest.get("release_type")
-            if isinstance(manifest.get("release_type"), str)
+            releaseId=manifest.get("releaseId") if isinstance(manifest.get("releaseId"), str) else None,
+            appId=manifest.get("appId") if isinstance(manifest.get("appId"), str) else None,
+            releaseType=manifest.get("releaseType")
+            if isinstance(manifest.get("releaseType"), str)
             else None,
-            schema_version=schema_version,
+            schemaVersion=schemaVersion,
         )
 
     issues: list[ValidationIssue] = []
@@ -1099,13 +1099,13 @@ def validate_manifest(
         manifest=str(manifest_path),
         ok=not ordered,
         errors=ordered,
-        release_id=manifest.get("release_id") if isinstance(manifest.get("release_id"), str) else None,
-        app_id=manifest.get("app_id") if isinstance(manifest.get("app_id"), str) else None,
-        release_type=manifest.get("release_type")
-        if isinstance(manifest.get("release_type"), str)
+        releaseId=manifest.get("releaseId") if isinstance(manifest.get("releaseId"), str) else None,
+        appId=manifest.get("appId") if isinstance(manifest.get("appId"), str) else None,
+        releaseType=manifest.get("releaseType")
+        if isinstance(manifest.get("releaseType"), str)
         else None,
-        schema_version=manifest.get("schema_version")
-        if isinstance(manifest.get("schema_version"), str)
+        schemaVersion=manifest.get("schemaVersion")
+        if isinstance(manifest.get("schemaVersion"), str)
         else None,
         manifest_digest=digest,
     )
@@ -1129,8 +1129,8 @@ def print_text(result: ValidationResult) -> None:
     print(f"{status} {result.manifest}")
     if result.ok:
         print(
-            f"  release_id={result.release_id} app_id={result.app_id} "
-            f"release_type={result.release_type} schema_version={result.schema_version}"
+            f"  releaseId={result.releaseId} appId={result.appId} "
+            f"releaseType={result.releaseType} schemaVersion={result.schemaVersion}"
         )
         print(f"  manifest_digest={result.manifest_digest}")
     else:
@@ -1185,10 +1185,10 @@ def main(argv: list[str] | None = None) -> int:
                 {
                     "manifest": result.manifest,
                     "ok": result.ok,
-                    "release_id": result.release_id,
-                    "app_id": result.app_id,
-                    "release_type": result.release_type,
-                    "schema_version": result.schema_version,
+                    "releaseId": result.releaseId,
+                    "appId": result.appId,
+                    "releaseType": result.releaseType,
+                    "schemaVersion": result.schemaVersion,
                     "manifest_digest": result.manifest_digest,
                     "errors": [
                         {"path": issue.path, "reason": issue.reason, "rule": issue.rule}

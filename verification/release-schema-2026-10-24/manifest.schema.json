@@ -6,48 +6,48 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "schema_version",
-    "release_id",
-    "app_id",
-    "release_type",
-    "created_at",
+    "schemaVersion",
+    "releaseId",
+    "appId",
+    "releaseType",
+    "createdAt",
     "compatibility",
     "ownership",
-    "apply_policy",
+    "applyPolicy",
     "health",
     "rollback",
     "signature"
   ],
   "properties": {
-    "schema_version": {
+    "schemaVersion": {
       "type": "string",
       "pattern": "^[0-9]+\\.[0-9]+$",
       "description": "Manifest contract version. v1.0 is the only version this schema validates."
     },
-    "release_id": {
+    "releaseId": {
       "type": "string",
       "pattern": "^[a-z0-9][a-z0-9._-]{2,63}$",
-      "description": "Immutable release identifier, unique within an app_id."
+      "description": "Immutable release identifier, unique within an appId."
     },
-    "app_id": {
-      "$ref": "#/$defs/project_name",
-      "description": "Stable application identifier. Must equal ownership.compose_project_name."
+    "appId": {
+      "$ref": "#/$defs/projectName",
+      "description": "Stable application identifier. Must equal ownership.composeProjectName."
     },
-    "release_type": {
+    "releaseType": {
       "enum": [
         "single_container",
         "compose",
         "config"
       ]
     },
-    "created_at": {
+    "createdAt": {
       "$ref": "#/$defs/timestamp"
     },
     "metadata": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "app_version": {
+        "appVersion": {
           "$ref": "#/$defs/version"
         },
         "description": {
@@ -62,9 +62,9 @@
       "required": [
         "os",
         "arch",
-        "min_agent_version",
-        "min_docker_version",
-        "min_compose_version"
+        "minAgentVersion",
+        "minDockerVersion",
+        "minComposeVersion"
       ],
       "properties": {
         "os": {
@@ -90,13 +90,13 @@
           },
           "maxItems": 2
         },
-        "min_agent_version": {
+        "minAgentVersion": {
           "$ref": "#/$defs/version"
         },
-        "min_docker_version": {
+        "minDockerVersion": {
           "$ref": "#/$defs/version"
         },
-        "min_compose_version": {
+        "minComposeVersion": {
           "$ref": "#/$defs/version"
         }
       }
@@ -106,7 +106,7 @@
       "additionalProperties": false,
       "required": [
         "owner",
-        "compose_project_name",
+        "composeProjectName",
         "labels"
       ],
       "properties": {
@@ -114,8 +114,8 @@
           "type": "string",
           "pattern": "^[a-z0-9][a-z0-9-]{1,31}$"
         },
-        "compose_project_name": {
-          "$ref": "#/$defs/project_name"
+        "composeProjectName": {
+          "$ref": "#/$defs/projectName"
         },
         "labels": {
           "type": "object",
@@ -130,7 +130,7 @@
               "const": "true"
             },
             "io.dockroll.app-id": {
-              "$ref": "#/$defs/project_name"
+              "$ref": "#/$defs/projectName"
             },
             "io.dockroll.release-id": {
               "type": "string",
@@ -164,19 +164,19 @@
             "replace_existing"
           ]
         },
-        "existing_project_name": {
-          "$ref": "#/$defs/project_name"
+        "existingProjectName": {
+          "$ref": "#/$defs/projectName"
         },
-        "existing_services": {
+        "existingServices": {
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
           "items": {
-            "$ref": "#/$defs/service_name"
+            "$ref": "#/$defs/serviceName"
           },
           "maxItems": 64
         },
-        "preserve_shared_resources": {
+        "preserveSharedResources": {
           "type": "array",
           "uniqueItems": true,
           "items": {
@@ -203,8 +203,8 @@
           },
           "then": {
             "required": [
-              "existing_project_name",
-              "existing_services"
+              "existingProjectName",
+              "existingServices"
             ]
           }
         },
@@ -224,12 +224,12 @@
               "anyOf": [
                 {
                   "required": [
-                    "existing_project_name"
+                    "existingProjectName"
                   ]
                 },
                 {
                   "required": [
-                    "existing_services"
+                    "existingServices"
                   ]
                 }
               ]
@@ -238,7 +238,7 @@
         }
       ]
     },
-    "shared_resources": {
+    "sharedResources": {
       "type": "array",
       "uniqueItems": true,
       "items": {
@@ -267,7 +267,7 @@
             "const": "preserve"
           },
           "path": {
-            "$ref": "#/$defs/absolute_path"
+            "$ref": "#/$defs/absolutePath"
           }
         },
         "allOf": [
@@ -318,7 +318,7 @@
       "required": [
         "image",
         "network",
-        "restart_policy",
+        "restartPolicy",
         "resources"
       ],
       "properties": {
@@ -347,7 +347,7 @@
           "type": "array",
           "uniqueItems": true,
           "items": {
-            "$ref": "#/$defs/env_entry"
+            "$ref": "#/$defs/envEntry"
           },
           "maxItems": 128
         },
@@ -380,7 +380,7 @@
               ]
             },
             "name": {
-              "$ref": "#/$defs/network_name"
+              "$ref": "#/$defs/networkName"
             }
           },
           "allOf": [
@@ -406,7 +406,7 @@
             }
           ]
         },
-        "restart_policy": {
+        "restartPolicy": {
           "type": "object",
           "additionalProperties": false,
           "required": [
@@ -421,7 +421,7 @@
                 "unless-stopped"
               ]
             },
-            "max_retries": {
+            "maxRetries": {
               "type": "integer",
               "minimum": 1,
               "maximum": 10
@@ -441,7 +441,7 @@
               },
               "then": {
                 "required": [
-                  "max_retries"
+                  "maxRetries"
                 ]
               }
             },
@@ -462,7 +462,7 @@
               },
               "then": {
                 "properties": {
-                  "max_retries": false
+                  "maxRetries": false
                 }
               }
             }
@@ -472,29 +472,29 @@
           "type": "object",
           "additionalProperties": false,
           "required": [
-            "cpu_millicores",
-            "memory_bytes",
-            "pids_limit"
+            "cpuMillicores",
+            "memoryBytes",
+            "pidsLimit"
           ],
           "properties": {
-            "cpu_millicores": {
+            "cpuMillicores": {
               "type": "integer",
               "minimum": 1,
               "maximum": 128000
             },
-            "memory_bytes": {
+            "memoryBytes": {
               "type": "integer",
               "minimum": 1048576,
               "maximum": 1099511627776
             },
-            "pids_limit": {
+            "pidsLimit": {
               "type": "integer",
               "minimum": 16,
               "maximum": 65535
             }
           }
         },
-        "stop_grace_period_seconds": {
+        "stopGracePeriodSeconds": {
           "type": "integer",
           "minimum": 1,
           "maximum": 300,
@@ -542,7 +542,7 @@
         "file": {
           "$ref": "#/$defs/artifact"
         },
-        "env_files": {
+        "envFiles": {
           "type": "array",
           "uniqueItems": true,
           "items": {
@@ -563,7 +563,7 @@
             ],
             "properties": {
               "name": {
-                "$ref": "#/$defs/service_name"
+                "$ref": "#/$defs/serviceName"
               },
               "image": {
                 "$ref": "#/$defs/image"
@@ -599,7 +599,7 @@
           "type": "array",
           "minItems": 1,
           "items": {
-            "$ref": "#/$defs/config_file"
+            "$ref": "#/$defs/configFile"
           },
           "maxItems": 128
         }
@@ -609,12 +609,12 @@
       "type": "array",
       "uniqueItems": true,
       "items": {
-        "$ref": "#/$defs/secret_entry"
+        "$ref": "#/$defs/secretEntry"
       },
       "default": [],
       "maxItems": 64
     },
-    "apply_policy": {
+    "applyPolicy": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -633,7 +633,7 @@
           "additionalProperties": false,
           "required": [
             "command",
-            "timeout_seconds"
+            "timeoutSeconds"
           ],
           "properties": {
             "command": {
@@ -646,13 +646,13 @@
               },
               "maxItems": 32
             },
-            "timeout_seconds": {
+            "timeoutSeconds": {
               "type": "integer",
               "minimum": 1,
               "maximum": 300
             },
             "service": {
-              "$ref": "#/$defs/service_name"
+              "$ref": "#/$defs/serviceName"
             }
           }
         }
@@ -683,33 +683,33 @@
       "additionalProperties": false,
       "required": [
         "check",
-        "interval_seconds",
-        "timeout_seconds",
+        "intervalSeconds",
+        "timeoutSeconds",
         "retries",
-        "startup_grace_seconds",
-        "observation_window_seconds",
-        "success_criteria"
+        "startupGraceSeconds",
+        "observationWindowSeconds",
+        "successCriteria"
       ],
       "properties": {
         "check": {
           "oneOf": [
             {
-              "$ref": "#/$defs/health_http"
+              "$ref": "#/$defs/healthHttp"
             },
             {
-              "$ref": "#/$defs/health_tcp"
+              "$ref": "#/$defs/healthTcp"
             },
             {
-              "$ref": "#/$defs/health_command"
+              "$ref": "#/$defs/healthCommand"
             }
           ]
         },
-        "interval_seconds": {
+        "intervalSeconds": {
           "type": "integer",
           "minimum": 1,
           "maximum": 300
         },
-        "timeout_seconds": {
+        "timeoutSeconds": {
           "type": "integer",
           "minimum": 1,
           "maximum": 120
@@ -719,18 +719,18 @@
           "minimum": 1,
           "maximum": 10
         },
-        "startup_grace_seconds": {
+        "startupGraceSeconds": {
           "type": "integer",
           "minimum": 0,
           "maximum": 600
         },
-        "observation_window_seconds": {
+        "observationWindowSeconds": {
           "type": "integer",
           "minimum": 10,
           "maximum": 3600,
           "description": "Time spent observing health before deciding success or rollback."
         },
-        "success_criteria": {
+        "successCriteria": {
           "enum": [
             "all_services_healthy",
             "primary_service_healthy"
@@ -743,11 +743,11 @@
       "additionalProperties": false,
       "required": [
         "strategy",
-        "max_attempts",
-        "failure_action",
-        "preserve_volumes",
-        "restore_service_set",
-        "deadline_seconds"
+        "maxAttempts",
+        "failureAction",
+        "preserveVolumes",
+        "restoreServiceSet",
+        "deadlineSeconds"
       ],
       "properties": {
         "strategy": {
@@ -756,28 +756,28 @@
             "explicit_release"
           ]
         },
-        "target_release_id": {
+        "targetReleaseId": {
           "type": "string",
           "pattern": "^[a-z0-9][a-z0-9._-]{2,63}$"
         },
-        "max_attempts": {
+        "maxAttempts": {
           "type": "integer",
           "minimum": 1,
           "maximum": 3
         },
-        "failure_action": {
+        "failureAction": {
           "enum": [
             "escalate",
             "keep_failed"
           ]
         },
-        "preserve_volumes": {
+        "preserveVolumes": {
           "const": true
         },
-        "restore_service_set": {
+        "restoreServiceSet": {
           "const": true
         },
-        "deadline_seconds": {
+        "deadlineSeconds": {
           "type": "integer",
           "minimum": 30,
           "maximum": 1800,
@@ -798,7 +798,7 @@
           },
           "then": {
             "required": [
-              "target_release_id"
+              "targetReleaseId"
             ]
           }
         },
@@ -815,7 +815,7 @@
           },
           "then": {
             "properties": {
-              "target_release_id": false
+              "targetReleaseId": false
             }
           }
         }
@@ -826,8 +826,8 @@
       "additionalProperties": false,
       "required": [
         "algorithm",
-        "key_id",
-        "signed_at",
+        "keyId",
+        "signedAt",
         "canonicalization",
         "signature"
       ],
@@ -838,11 +838,11 @@
             "ecdsa-p256-sha256"
           ]
         },
-        "key_id": {
+        "keyId": {
           "type": "string",
           "pattern": "^[a-z0-9][a-z0-9._-]{2,63}$"
         },
-        "signed_at": {
+        "signedAt": {
           "$ref": "#/$defs/timestamp"
         },
         "canonicalization": {
@@ -878,12 +878,12 @@
     {
       "if": {
         "properties": {
-          "release_type": {
+          "releaseType": {
             "const": "single_container"
           }
         },
         "required": [
-          "release_type"
+          "releaseType"
         ]
       },
       "then": {
@@ -895,12 +895,12 @@
     {
       "if": {
         "properties": {
-          "release_type": {
+          "releaseType": {
             "const": "compose"
           }
         },
         "required": [
-          "release_type"
+          "releaseType"
         ]
       },
       "then": {
@@ -912,12 +912,12 @@
     {
       "if": {
         "properties": {
-          "release_type": {
+          "releaseType": {
             "const": "config"
           }
         },
         "required": [
-          "release_type"
+          "releaseType"
         ]
       },
       "then": {
@@ -936,15 +936,15 @@
       "type": "string",
       "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"
     },
-    "project_name": {
+    "projectName": {
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]{2,31}$"
     },
-    "service_name": {
+    "serviceName": {
       "type": "string",
       "pattern": "^[a-z0-9][a-z0-9_-]{0,62}$"
     },
-    "network_name": {
+    "networkName": {
       "type": "string",
       "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]{0,63}$"
     },
@@ -962,7 +962,7 @@
       "minLength": 1,
       "maxLength": 255
     },
-    "absolute_path": {
+    "absolutePath": {
       "type": "string",
       "pattern": "^/[A-Za-z0-9._/-]+$",
       "maxLength": 4096
@@ -993,7 +993,7 @@
       "required": [
         "path",
         "sha256",
-        "size_bytes"
+        "sizeBytes"
       ],
       "properties": {
         "path": {
@@ -1005,14 +1005,14 @@
         "sha256": {
           "$ref": "#/$defs/sha256"
         },
-        "size_bytes": {
+        "sizeBytes": {
           "type": "integer",
           "minimum": 0,
           "maximum": 1099511627776
         }
       }
     },
-    "env_entry": {
+    "envEntry": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -1027,7 +1027,7 @@
           "type": "string",
           "maxLength": 4096
         },
-        "secret_ref": {
+        "secretRef": {
           "type": "string",
           "pattern": "^[A-Za-z_][A-Za-z0-9_.-]{0,127}$"
         }
@@ -1040,12 +1040,12 @@
         },
         {
           "required": [
-            "secret_ref"
+            "secretRef"
           ]
         }
       ]
     },
-    "secret_entry": {
+    "secretEntry": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -1142,7 +1142,7 @@
         "type",
         "source",
         "target",
-        "read_only"
+        "readOnly"
       ],
       "properties": {
         "type": {
@@ -1155,12 +1155,12 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 4096,
-          "description": "Bind sources must match $defs.bind_source and resolve inside /etc/dockroll/apps/<app_id>/, /var/lib/dockroll/apps/<app_id>/, /srv/<app_id>/ or /opt/<app_id>/."
+          "description": "Bind sources must match $defs.bindSource and resolve inside /etc/dockroll/apps/<appId>/, /var/lib/dockroll/apps/<appId>/, /srv/<appId>/ or /opt/<appId>/."
         },
         "target": {
-          "$ref": "#/$defs/absolute_path"
+          "$ref": "#/$defs/absolutePath"
         },
-        "read_only": {
+        "readOnly": {
           "type": "boolean"
         }
       },
@@ -1179,7 +1179,7 @@
           "then": {
             "properties": {
               "source": {
-                "$ref": "#/$defs/bind_source"
+                "$ref": "#/$defs/bindSource"
               }
             }
           }
@@ -1198,7 +1198,7 @@
           "then": {
             "properties": {
               "source": {
-                "$ref": "#/$defs/network_name"
+                "$ref": "#/$defs/networkName"
               }
             }
           }
@@ -1209,23 +1209,23 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "host_port",
-        "container_port",
+        "hostPort",
+        "containerPort",
         "protocol"
       ],
       "properties": {
-        "host_ip": {
+        "hostIp": {
           "type": "string",
           "pattern": "^[0-9a-fA-F:.]+$",
           "maxLength": 45,
           "default": "127.0.0.1"
         },
-        "host_port": {
+        "hostPort": {
           "type": "integer",
           "minimum": 1,
           "maximum": 65535
         },
-        "container_port": {
+        "containerPort": {
           "type": "integer",
           "minimum": 1,
           "maximum": 65535
@@ -1238,12 +1238,12 @@
         }
       }
     },
-    "config_file": {
+    "configFile": {
       "type": "object",
       "additionalProperties": false,
       "required": [
         "source",
-        "target_path",
+        "targetPath",
         "mode",
         "uid",
         "gid"
@@ -1252,8 +1252,8 @@
         "source": {
           "$ref": "#/$defs/artifact"
         },
-        "target_path": {
-          "$ref": "#/$defs/absolute_path"
+        "targetPath": {
+          "$ref": "#/$defs/absolutePath"
         },
         "mode": {
           "type": "string",
@@ -1271,7 +1271,7 @@
         }
       }
     },
-    "health_http": {
+    "healthHttp": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -1279,7 +1279,7 @@
         "path",
         "port",
         "scheme",
-        "expected_status"
+        "expectedStatus"
       ],
       "properties": {
         "type": {
@@ -1302,17 +1302,17 @@
             "https"
           ]
         },
-        "expected_status": {
+        "expectedStatus": {
           "type": "integer",
           "minimum": 100,
           "maximum": 599
         },
         "service": {
-          "$ref": "#/$defs/service_name"
+          "$ref": "#/$defs/serviceName"
         }
       }
     },
-    "health_tcp": {
+    "healthTcp": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -1330,11 +1330,11 @@
           "description": "Container port probed from inside the app network; not necessarily a published host port."
         },
         "service": {
-          "$ref": "#/$defs/service_name"
+          "$ref": "#/$defs/serviceName"
         }
       }
     },
-    "health_command": {
+    "healthCommand": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -1356,11 +1356,11 @@
           "maxItems": 32
         },
         "service": {
-          "$ref": "#/$defs/service_name"
+          "$ref": "#/$defs/serviceName"
         }
       }
     },
-    "bind_source": {
+    "bindSource": {
       "type": "string",
       "pattern": "^/(?:etc/dockroll/apps|var/lib/dockroll/apps|srv|opt)(?:/[A-Za-z0-9][A-Za-z0-9._-]*)+$",
       "maxLength": 4096,

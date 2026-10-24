@@ -82,26 +82,26 @@ artifact-hash-mismatch|sha256 mismatch
 artifact-size-mismatch|size mismatch
 unknown-field|unknown field 'unexpected_release_note'
 inline-secret|inline secret value is forbidden
-unsupported-schema-version|unsupported schema_version '1.1'
-project-name-mismatch|compose project name must equal app_id
+unsupported-schema-version|unsupported schemaVersion '1.1'
+project-name-mismatch|compose project name must equal appId
 secret-ref-unknown|is not declared in secrets[]
 config-target-outside-root|managed app root
 config-mode-world-writable|world-writable
 compose-duplicate-service|duplicate compose service name
 secret-ref-unmanaged|does not match '^/run/dockroll-secrets/
-bind-path-relative|shared_resources[0].path
+bind-path-relative|sharedResources[0].path
 invalid-timestamp|not a valid UTC timestamp
-timestamp-order|signed_at must not be earlier than created_at
+timestamp-order|signedAt must not be earlier than createdAt
 duplicate-env-name|duplicate environment variable name
 host-network-ports|ports must not be declared when network.mode is host or none
-restart-on-failure-no-retries|missing required field 'max_retries'
+restart-on-failure-no-retries|missing required field 'maxRetries'
 platform-arch-mismatch|is not covered by compatibility.arch
-health-timeout-exceeds-interval|must be less than interval_seconds
+health-timeout-exceeds-interval|must be less than intervalSeconds
 label-key-invalid|does not match '^[a-z0-9]
 too-many-secrets|violates maxItems=64
 bind-mount-docker-sock|Docker socket must not be bind-mounted
 bind-mount-outside-allowlist|outside the allowlist
-bind-mount-writable-config|must be read_only
+bind-mount-writable-config|must be readOnly
 bind-mount-other-app|under the app-specific root
 CASES
 
@@ -136,7 +136,7 @@ find . -type f ! -path './output/*' ! -path './__pycache__/*' -print0 \
 echo
 
 echo "## Test signing key"
-echo "key_id=test-fixture-ed25519-2026"
+echo "keyId=test-fixture-ed25519-2026"
 echo "public_key_sha256=$(sha256sum samples/keys/test-ed25519-public.pem | cut -d' ' -f1)"
 echo "note=test fixture key only; it is not a trust root and must not be used for production releases"
 echo
